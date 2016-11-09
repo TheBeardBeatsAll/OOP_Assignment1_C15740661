@@ -6,13 +6,15 @@ void setup()
   pda_length = height - (border*2);
   handle_length = pda_length / 3.0f;
   handle_width = pda_length * 0.15f;
+  corner = pda_length * 0.1f;
   createPDA();
 }//end setup
 
 PShape pda, outer, inner, handle;
 
 float border, pda_width, pda_length;
-float handle_length, handle_width;
+float handle_length, handle_width, corner;
+
 void draw()
 {
   background(0);
@@ -23,11 +25,15 @@ void draw()
   translate(pda_width - handle_width, handle_length);
   drawHandle();
   popMatrix();
+  
+  pushMatrix();
+  translate(border + (corner * 0.9), border + (corner * 0.9));
+  screen();
+  popMatrix();
 }//end draw
 
 void createPDA()
 {
-  float corner = pda_length * 0.1f;
   float inside_corner = corner * 0.7f;
   float inside_width = corner * 0.7f;
   float gap = pda_length * 0.015f;
@@ -112,3 +118,16 @@ void drawHandle()
     i++;
   }//end while
 }//end drawHandle
+
+void screen()
+{
+  float screen_width = pda_width * 0.73f;
+  float screen_length = pda_length - (corner * 1.8f);
+  float gap = screen_width * 0.008f;
+ 
+  stroke(50);
+  fill(0);
+  rect( - gap, - gap, screen_width + (gap * 2), screen_length + (gap *  2));
+  fill(#898080);
+  rect(0, 0, screen_width, screen_length);
+}//end screen

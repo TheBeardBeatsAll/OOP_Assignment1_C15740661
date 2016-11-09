@@ -1,0 +1,4 @@
+class Soldier
+{
+  
+}//end class
