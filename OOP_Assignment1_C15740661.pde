@@ -1,6 +1,7 @@
 void setup()
 {
   fullScreen();
+  
   border = width*0.02f;
   pda_width = width - (border*2);
   pda_length = height - (border*2);
@@ -11,9 +12,11 @@ void setup()
 }//end setup
 
 PShape pda, outer, inner, handle;
+//PImage inner_pattern;
 
 float border, pda_width, pda_length;
 float handle_length, handle_width, corner;
+boolean on = false;
 
 void draw()
 {
@@ -24,6 +27,7 @@ void draw()
   shape(pda);
   translate(pda_width - handle_width, handle_length);
   drawHandle();
+  on_off();
   popMatrix();
   
   pushMatrix();
@@ -34,6 +38,8 @@ void draw()
 
 void createPDA()
 {
+  //inner_pattern = loadImage("hex_cube.jpg");
+  
   float inside_corner = corner * 0.7f;
   float inside_width = corner * 0.7f;
   float gap = pda_length * 0.015f;
@@ -119,11 +125,28 @@ void drawHandle()
   }//end while
 }//end drawHandle
 
+void on_off()
+{
+  float radius = corner * 0.8f;
+  if(on)
+  {
+    stroke(0);
+    fill(#FF1F23);
+    ellipse(handle_width / 2, - radius * 0.9f, radius, radius);
+  }//end if
+  else
+  {
+    stroke(0);
+    fill(#810103);
+    ellipse(handle_width / 2, - radius * 0.9f, radius, radius);
+  }//end else
+}//end on_off
+
 void screen()
 {
   float screen_width = pda_width * 0.73f;
   float screen_length = pda_length - (corner * 1.8f);
-  float gap = screen_width * 0.008f;
+  float gap = screen_width * 0.006f;
  
   stroke(50);
   fill(0);
@@ -131,3 +154,8 @@ void screen()
   fill(#898080);
   rect(0, 0, screen_width, screen_length);
 }//end screen
+
+void mousePressed()
+{
+  
+}//end on_off
