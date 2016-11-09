@@ -1,22 +1,17 @@
 void setup()
 {
   fullScreen();
-  
-  border = width*0.02f;
-  pda_width = width - (border*2);
-  pda_length = height - (border*2);
-  handle_length = pda_length / 3.0f;
-  handle_width = pda_length * 0.15f;
-  corner = pda_length * 0.1f;
-  radius = corner * 0.8f;
+  initialize();
   createPDA();
 }//end setup
 
 PShape pda, outer, inner, handle;
-//PImage inner_pattern;
+//Animation load = new Animation();
 
 float border, pda_width, pda_length;
-float handle_length, handle_width, corner, radius;
+float handle_length, handle_width, corner;
+float screen_width, screen_length, radius;
+  
 boolean on = false;
 
 void draw()
@@ -37,10 +32,24 @@ void draw()
   popMatrix();
 }//end draw
 
+void initialize()
+{
+  border = width*0.02f;
+  pda_width = width - (border*2);
+  pda_length = height - (border*2);
+  
+  corner = pda_length * 0.1f;
+  radius = corner * 0.8f;
+  
+  screen_width = pda_width * 0.73f;
+  screen_length = pda_length - (corner * 1.8f);
+  
+  handle_length = pda_length / 3.0f;
+  handle_width = pda_length * 0.15f;
+}//initialize
+
 void createPDA()
 {
-  //inner_pattern = loadImage("hex_cube.jpg");
-  
   float inside_corner = corner * 0.7f;
   float inside_width = corner * 0.7f;
   float gap = pda_length * 0.015f;
@@ -145,15 +154,24 @@ void on_off()
 
 void screen()
 {
-  float screen_width = pda_width * 0.73f;
-  float screen_length = pda_length - (corner * 1.8f);
   float gap = screen_width * 0.006f;
  
   stroke(50);
-  fill(0);
-  rect( - gap, - gap, screen_width + (gap * 2), screen_length + (gap *  2));
   fill(#898080);
-  rect(0, 0, screen_width, screen_length);
+  rect( - gap, - gap, screen_width + (gap * 2), screen_length + (gap *  2));
+  if(on)
+  {
+    loading();
+    fill(0);
+    rect(0, 0, screen_width * 0.85f, screen_length);
+    fill(#FF1F23);
+    rect(screen_width * 0.80f, 0, screen_width * 0.2f, screen_length);
+  }//end if
+  else
+  {
+    fill(#0B5A11);
+    rect(0, 0, screen_width, screen_length);
+  }//end else
 }//end screen
 
 void mousePressed()
@@ -173,3 +191,8 @@ void mousePressed()
     }//end else
   }//end if
 }//end on_off
+
+void loading()
+{
+  
+}//end loading
