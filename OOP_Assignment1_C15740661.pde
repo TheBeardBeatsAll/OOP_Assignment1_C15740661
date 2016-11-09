@@ -8,6 +8,7 @@ void setup()
   handle_length = pda_length / 3.0f;
   handle_width = pda_length * 0.15f;
   corner = pda_length * 0.1f;
+  radius = corner * 0.8f;
   createPDA();
 }//end setup
 
@@ -15,7 +16,7 @@ PShape pda, outer, inner, handle;
 //PImage inner_pattern;
 
 float border, pda_width, pda_length;
-float handle_length, handle_width, corner;
+float handle_length, handle_width, corner, radius;
 boolean on = false;
 
 void draw()
@@ -127,19 +128,19 @@ void drawHandle()
 
 void on_off()
 {
-  float radius = corner * 0.8f;
+  stroke(0);  
   if(on)
   {
-    stroke(0);
     fill(#FF1F23);
     ellipse(handle_width / 2, - radius * 0.9f, radius, radius);
   }//end if
   else
   {
-    stroke(0);
     fill(#810103);
     ellipse(handle_width / 2, - radius * 0.9f, radius, radius);
   }//end else
+  arc(handle_width / 2, - radius * 0.9f, radius/2, radius/2, - THIRD_PI, PI + THIRD_PI, OPEN);
+  line(handle_width / 2, - radius * 0.9f,  handle_width / 2, -radius * 1.2f);
 }//end on_off
 
 void screen()
@@ -157,5 +158,18 @@ void screen()
 
 void mousePressed()
 {
-  
+  float on_x = pda_width - (handle_width / 2);
+  float on_y = handle_length - (radius * 0.9f);
+  float d = sqrt(pow(mouseX-on_x,2) + pow(mouseY-on_y,2));
+  if (d < radius)
+  {
+    if(on)
+    {
+      on = false;
+    }//end if
+    else
+    {
+      on = true;
+    }//end else
+  }//end if
 }//end on_off
