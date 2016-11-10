@@ -2,7 +2,6 @@ void setup()
 {
   fullScreen();
   loading_screen = new Gif(this, "XCOM_Shield_Logo.gif");
-  loading_screen.loop();
   initialize();
   createPDA();
 }//end setup
@@ -16,6 +15,7 @@ PShape pda, outer, inner, handle;
 float border, pda_width, pda_length;
 float handle_length, handle_width, corner;
 float screen_width, screen_length, radius;
+
 int menu_choice;
   
 boolean on = false;
@@ -169,19 +169,45 @@ void screen()
   rect( - gap, - gap, screen_width + (gap * 2), screen_length + (gap *  2));
   if(on)
   {
-    loading();
+    loading(menu_choice);
+    
+    pushMatrix();
+    translate(screen_width * 0.80f, 0);
     menu();
-    fill(#FF1F23);
-    rect(screen_width * 0.80f, 0, screen_width * 0.2f, screen_length);
+    popMatrix();
     
     switch(menu_choice)
     {
-      
+      case 0:
+      {
+        briefing();
+        break;
+      }//end case
+      case 1:
+      {
+        soldiers();
+        break;
+      }//end case
+      case 2:
+      {
+        crafts();
+        break;
+      }//end case
+      case 3:
+      {
+        tech();
+        break;
+      }//end case
+      case 4:
+      {
+        wounded();
+        break;
+      }//end case
     }//end switch
   }//end if
   else
   {
-    fill(#0B5A11);
+    fill(0);
     rect(0, 0, screen_width, screen_length);
   }//end else
 }//end screen
@@ -204,18 +230,50 @@ void mousePressed()
   }//end if
 }//end on_off
 
-void loading()
+void loading(int i)
 {
   fill(0);
   rect(0, 0, screen_width * 0.85f, screen_length);
+  loading_screen.loop();
   image(loading_screen, (screen_width * 0.85f) / 2 - loading_screen.width / 2, screen_length / 2 - loading_screen.height / 2);
   if (frameCount % 120 == 0)
   {
+      menu_choice = i;
       return;
   }
 }//end loading
 
 void menu()
 {
-  
+
 }//end menu
+
+void briefing()
+{
+  fill(#BA3CC1);
+  rect(0, 0, screen_width * 0.85f, screen_length);
+}//end briefing
+
+void soldiers()
+{
+  fill(#138346);
+  rect(0, 0, screen_width * 0.85f, screen_length);
+}//end soldiers
+
+void crafts()
+{
+  fill(#836B13);
+  rect(0, 0, screen_width * 0.85f, screen_length);
+}//end craft
+
+void tech()
+{
+  fill(#8E2818);
+  rect(0, 0, screen_width * 0.85f, screen_length);
+}//end tech
+
+void wounded()
+{
+  fill(#67DFFF);
+  rect(0, 0, screen_width * 0.85f, screen_length);
+}//end wounded

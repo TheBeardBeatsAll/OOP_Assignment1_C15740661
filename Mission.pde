@@ -1,0 +1,4 @@
+class Mission
+{
+  
+}//end mission
