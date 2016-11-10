@@ -1,16 +1,22 @@
 void setup()
 {
   fullScreen();
+  loading_screen = new Gif(this, "XCOM_Shield_Logo.gif");
+  loading_screen.loop();
   initialize();
   createPDA();
 }//end setup
 
+import gifAnimation.*;
+
+Gif loading_screen;
+
 PShape pda, outer, inner, handle;
-//Animation load = new Animation();
 
 float border, pda_width, pda_length;
 float handle_length, handle_width, corner;
 float screen_width, screen_length, radius;
+int menu_choice;
   
 boolean on = false;
 
@@ -46,6 +52,8 @@ void initialize()
   
   handle_length = pda_length / 3.0f;
   handle_width = pda_length * 0.15f;
+  
+  menu_choice = 0;
 }//initialize
 
 void createPDA()
@@ -162,10 +170,14 @@ void screen()
   if(on)
   {
     loading();
-    fill(0);
-    rect(0, 0, screen_width * 0.85f, screen_length);
+    menu();
     fill(#FF1F23);
     rect(screen_width * 0.80f, 0, screen_width * 0.2f, screen_length);
+    
+    switch(menu_choice)
+    {
+      
+    }//end switch
   }//end if
   else
   {
@@ -194,5 +206,16 @@ void mousePressed()
 
 void loading()
 {
-  
+  fill(0);
+  rect(0, 0, screen_width * 0.85f, screen_length);
+  image(loading_screen, (screen_width * 0.85f) / 2 - loading_screen.width / 2, screen_length / 2 - loading_screen.height / 2);
+  if (frameCount % 120 == 0)
+  {
+      return;
+  }
 }//end loading
+
+void menu()
+{
+  
+}//end menu
