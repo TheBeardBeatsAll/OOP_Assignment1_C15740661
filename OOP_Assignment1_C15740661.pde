@@ -15,10 +15,12 @@ PShape pda, outer, inner, handle;
 float border, pda_width, pda_length;
 float handle_length, handle_width, corner;
 float screen_width, screen_length, radius;
+float menu_border, menu_button ,menu_gap ,menu_width ,menu_padding;
 
 int menu_choice;
   
 boolean on = false;
+boolean[] menu_colours = new boolean[5];
 
 void draw()
 {
@@ -54,6 +56,12 @@ void initialize()
   handle_width = pda_length * 0.15f;
   
   menu_choice = 100;
+  menu_border = screen_length * 0.18f;
+  menu_button = (screen_length * 0.8f) / 6;
+  menu_gap = menu_button * 0.25f;
+  menu_width = screen_width * 0.18f;
+  menu_padding = screen_width * 0.01f;
+  
   stroke(0);
 }//initialize
 
@@ -154,6 +162,10 @@ void on_off()
   {
     fill(#810103);
     ellipse(handle_width / 2, - radius * 0.9f, radius, radius);
+    for(int i = 0; i < 5; i++)
+    {
+       menu_colours[i] = false;
+    }//end 
   }//end else
   arc(handle_width / 2, - radius * 0.9f, radius/2, radius/2, - THIRD_PI, PI + THIRD_PI, OPEN);
   line(handle_width / 2, - radius * 0.9f,  handle_width / 2, -radius * 1.2f);
@@ -212,10 +224,10 @@ void screen()
 
 void mousePressed()
 {
-  float on_x = pda_width - (handle_width / 2);
-  float on_y = handle_length - (radius * 0.9f);
+  float on_x = width - ( border + (handle_width / 2) );
+  float on_y = border + handle_length - (radius * 0.9f);
   float d = sqrt(pow(mouseX-on_x,2) + pow(mouseY-on_y,2));
-  if (d < radius)
+  if (d <= ( radius / 2 ))
   {
     if(on)
     {
@@ -225,6 +237,50 @@ void mousePressed()
     {
       on = true;
     }//end else
+  }//end if
+  
+  if( mouseX >= border + menu_padding + (corner * 0.9) + (screen_width * 0.8) && mouseX <= border + menu_padding + (corner * 0.9) + (screen_width * 0.8) + menu_width)
+  {
+    if( mouseY >= border + menu_border + (corner * 0.9) && mouseY <= border + menu_border + (corner * 0.9) + menu_button)
+    {
+        for(int i = 0; i < 5; i++)
+        {
+          menu_colours[i] = false;
+        }//end
+        menu_colours[0] = true;
+    }//end if
+    else if( mouseY >= border + menu_border + (corner * 0.9) + menu_gap + menu_button && mouseY <= border + menu_border + (corner * 0.9) + menu_gap + (2 * menu_button))
+    {
+        for(int i = 0; i < 5; i++)
+        {
+          menu_colours[i] = false;
+        }//end
+        menu_colours[1] = true;
+    }//end if
+    else if( mouseY >= border + menu_border + (corner * 0.9) + (2 * menu_gap) + (2 * menu_button) && mouseY <= border + menu_border + (corner * 0.9) + (2 * menu_gap) + (3 * menu_button))
+    {
+        for(int i = 0; i < 5; i++)
+        {
+          menu_colours[i] = false;
+        }//end
+        menu_colours[2] = true;
+    }//end if
+    else if( mouseY >= border + menu_border + (corner * 0.9) + (3 * menu_gap) + (3 * menu_button) && mouseY <= border + menu_border + (corner * 0.9) + (3 * menu_gap) + (4 * menu_button))
+    {
+        for(int i = 0; i < 5; i++)
+        {
+          menu_colours[i] = false;
+        }//end
+        menu_colours[3] = true;
+    }//end if
+    else if( mouseY >= border + menu_border + (corner * 0.9) + (4 * menu_gap) + (4 * menu_button) && mouseY <= border + menu_border + (corner * 0.9) + (4 * menu_gap) + (5 * menu_button))
+    {
+        for(int i = 0; i < 5; i++)
+        {
+          menu_colours[i] = false;
+        }//end
+        menu_colours[4] = true;
+    }//end if
   }//end if
 }//end on_off
 
@@ -248,17 +304,11 @@ void loading()
   {
       menu_choice = 0;
       return;
-  }
+  }//end if
 }//end loading
 
 void menu()
 {
-  float menu_border = screen_length * 0.18f;
-  float menu_button = (screen_length * 0.8f) / 6;
-  float menu_gap = menu_button * 0.25f;
-  float menu_width = screen_width * 0.18f;
-  float menu_padding = screen_width * 0.01f;
-  
   fill(#6F3A5F);
   rect(0, 0, screen_width * 0.2f, screen_length);
   
@@ -270,30 +320,42 @@ void menu()
   
   for(int i = 0; i < 5; i++)
   {
-    fill(#60EFF5);
-    rect(menu_padding, menu_border +((i * menu_gap) + (i * menu_button)), menu_width, menu_button);
-    
-    fill(0);
     textSize(24);
     textAlign(CENTER, CENTER);
+    
+    if(menu_colours[i])
+    {
+      fill(#0635BF);
+    }//end if
+    else
+    {
+      fill(#60EFF5);
+    }//end else
+    rect(menu_padding, menu_border + ((i * menu_gap) + (i * menu_button)), menu_width, menu_button);
+
     if(i == 0)
     {
+      fill(0);
       text("Briefing", (screen_width * 0.2f) / 2, menu_border + ( menu_button / 2 ) +((i * menu_gap) + (i * menu_button)));
     }//end if
     else if(i == 1)
     {
+      fill(0);
       text("Soldiers", (screen_width * 0.2f) / 2, menu_border + ( menu_button / 2 ) +((i * menu_gap) + (i * menu_button)));
     }//end else if
     else if(i == 2)
     {
+      fill(0);
       text("Craft", (screen_width * 0.2f) / 2, menu_border + ( menu_button / 2 ) +((i * menu_gap) + (i * menu_button)));
     }//end else if
     else if(i == 3)
     {
+      fill(0);
       text("Tech", (screen_width * 0.2f) / 2, menu_border + ( menu_button / 2 ) +((i * menu_gap) + (i * menu_button)));
     }//end else if
     else if(i == 4)
     {
+      fill(0);
       text("Council", (screen_width * 0.2f) / 2, menu_border + ( menu_button / 2 ) +((i * menu_gap) + (i * menu_button)));
     }//end else if
   }//end for
