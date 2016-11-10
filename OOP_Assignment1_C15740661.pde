@@ -22,7 +22,7 @@ boolean on = false;
 
 void draw()
 {
-  background(0);
+  background(15);
   
   pushMatrix();
   translate(border, border);
@@ -53,7 +53,8 @@ void initialize()
   handle_length = pda_length / 3.0f;
   handle_width = pda_length * 0.15f;
   
-  menu_choice = 0;
+  menu_choice = 100;
+  stroke(0);
 }//initialize
 
 void createPDA()
@@ -68,7 +69,7 @@ void createPDA()
   outer = createShape();
   outer.beginShape();
   outer.fill(0, 0, 125);
-  outer.stroke(50);
+  outer.stroke(0);
   outer.vertex(corner, 0);
   outer.vertex(pda_width - corner, 0);
   outer.vertex(pda_width, corner);
@@ -93,7 +94,7 @@ void createPDA()
   inner = createShape();
   inner.beginShape();
   inner.fill(0, 125, 125);
-  inner.stroke(50);
+  inner.stroke(0);
   inner.vertex(corner + gap_theta, gap_theta);
   inner.vertex(pda_width - (gap_theta + corner), gap_theta);
   inner.vertex(pda_width - gap_theta, corner + gap_theta);
@@ -120,7 +121,6 @@ void createPDA()
 
 void drawHandle()
 {
-  stroke(50);
   int i = 0;
   int j = 0;
   int k = 1;
@@ -144,8 +144,7 @@ void drawHandle()
 }//end drawHandle
 
 void on_off()
-{
-  stroke(0);  
+{  
   if(on)
   {
     fill(#FF1F23);
@@ -164,12 +163,11 @@ void screen()
 {
   float gap = screen_width * 0.006f;
  
-  stroke(50);
   fill(#898080);
   rect( - gap, - gap, screen_width + (gap * 2), screen_length + (gap *  2));
   if(on)
   {
-    loading(menu_choice);
+    loading();
     
     pushMatrix();
     translate(screen_width * 0.80f, 0);
@@ -200,7 +198,7 @@ void screen()
       }//end case
       case 4:
       {
-        wounded();
+        council();
         break;
       }//end case
     }//end switch
@@ -230,50 +228,103 @@ void mousePressed()
   }//end if
 }//end on_off
 
-void loading(int i)
+void loading()
 {
+  float timeDelta = 0;
+  float timeAccumulator = 0;
+
+  int last = 0;
+  int now = millis();
+  
+  timeDelta = (now - last) / 1000.0f;  
+  last = now;  
+  timeAccumulator += timeDelta;
+  
   fill(0);
-  rect(0, 0, screen_width * 0.85f, screen_length);
+  rect(0, 0, screen_width * 0.8f, screen_length);
   loading_screen.loop();
-  image(loading_screen, (screen_width * 0.85f) / 2 - loading_screen.width / 2, screen_length / 2 - loading_screen.height / 2);
-  if (frameCount % 120 == 0)
+  image(loading_screen, (screen_width * 0.8f) / 2 - loading_screen.width / 2, screen_length / 2 - loading_screen.height / 2);
+  if (timeAccumulator >= 4)
   {
-      menu_choice = i;
+      menu_choice = 0;
       return;
   }
 }//end loading
 
 void menu()
 {
-
+  float menu_border = screen_length * 0.18f;
+  float menu_button = (screen_length * 0.8f) / 6;
+  float menu_gap = menu_button * 0.25f;
+  float menu_width = screen_width * 0.18f;
+  float menu_padding = screen_width * 0.01f;
+  
+  fill(#6F3A5F);
+  rect(0, 0, screen_width * 0.2f, screen_length);
+  
+  fill(0);
+  textSize(36);
+  textAlign(CENTER, CENTER);
+  text("XCOM:", (screen_width * 0.2f) / 2, menu_border / 3);
+  text("Menu", (screen_width * 0.2f) / 2, (menu_border * 2) / 3);
+  
+  for(int i = 0; i < 5; i++)
+  {
+    fill(#60EFF5);
+    rect(menu_padding, menu_border +((i * menu_gap) + (i * menu_button)), menu_width, menu_button);
+    
+    fill(0);
+    textSize(24);
+    textAlign(CENTER, CENTER);
+    if(i == 0)
+    {
+      text("Briefing", (screen_width * 0.2f) / 2, menu_border + ( menu_button / 2 ) +((i * menu_gap) + (i * menu_button)));
+    }//end if
+    else if(i == 1)
+    {
+      text("Soldiers", (screen_width * 0.2f) / 2, menu_border + ( menu_button / 2 ) +((i * menu_gap) + (i * menu_button)));
+    }//end else if
+    else if(i == 2)
+    {
+      text("Craft", (screen_width * 0.2f) / 2, menu_border + ( menu_button / 2 ) +((i * menu_gap) + (i * menu_button)));
+    }//end else if
+    else if(i == 3)
+    {
+      text("Tech", (screen_width * 0.2f) / 2, menu_border + ( menu_button / 2 ) +((i * menu_gap) + (i * menu_button)));
+    }//end else if
+    else if(i == 4)
+    {
+      text("Council", (screen_width * 0.2f) / 2, menu_border + ( menu_button / 2 ) +((i * menu_gap) + (i * menu_button)));
+    }//end else if
+  }//end for
 }//end menu
 
 void briefing()
 {
   fill(#BA3CC1);
-  rect(0, 0, screen_width * 0.85f, screen_length);
+  rect(0, 0, screen_width * 0.8f, screen_length);
 }//end briefing
 
 void soldiers()
 {
   fill(#138346);
-  rect(0, 0, screen_width * 0.85f, screen_length);
+  rect(0, 0, screen_width * 0.8f, screen_length);
 }//end soldiers
 
 void crafts()
 {
   fill(#836B13);
-  rect(0, 0, screen_width * 0.85f, screen_length);
+  rect(0, 0, screen_width * 0.8f, screen_length);
 }//end craft
 
 void tech()
 {
   fill(#8E2818);
-  rect(0, 0, screen_width * 0.85f, screen_length);
+  rect(0, 0, screen_width * 0.8f, screen_length);
 }//end tech
 
-void wounded()
+void council()
 {
   fill(#67DFFF);
-  rect(0, 0, screen_width * 0.85f, screen_length);
-}//end wounded
+  rect(0, 0, screen_width * 0.8f, screen_length);
+}//end council
