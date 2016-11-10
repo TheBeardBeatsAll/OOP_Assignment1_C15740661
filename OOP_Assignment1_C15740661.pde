@@ -162,6 +162,7 @@ void on_off()
   {
     fill(#810103);
     ellipse(handle_width / 2, - radius * 0.9f, radius, radius);
+    
     for(int i = 0; i < 5; i++)
     {
        menu_colours[i] = false;
@@ -174,7 +175,7 @@ void on_off()
 void screen()
 {
   float gap = screen_width * 0.006f;
- 
+  
   fill(#898080);
   rect( - gap, - gap, screen_width + (gap * 2), screen_length + (gap *  2));
   if(on)
@@ -190,25 +191,30 @@ void screen()
     {
       case 0:
       {
-        briefing();
+        welcome();
         break;
       }//end case
-      case 1:
+      case 1:       
       {
-        soldiers();
+        briefing();
         break;
       }//end case
       case 2:
       {
-        crafts();
+        soldiers();
         break;
       }//end case
       case 3:
       {
-        tech();
+        crafts();
         break;
       }//end case
       case 4:
+      {
+        tech();
+        break;
+      }//end case
+      case 5:
       {
         council();
         break;
@@ -286,22 +292,26 @@ void mousePressed()
 
 void loading()
 {
-  float timeDelta = 0;
-  float timeAccumulator = 0;
+  //float timeDelta = 0;
+  //float timeAccumulator = 0;
 
-  int last = 0;
-  int now = millis();
+  //int last = 0;
+  //int now = millis();
   
-  timeDelta = (now - last) / 1000.0f;  
-  last = now;  
-  timeAccumulator += timeDelta;
-  
+  //timeDelta = (now - last)/ 1000f;  
+  //last = now;  
+  //timeAccumulator += timeDelta;
+  float time;
+  float interval = 4;
+  time = interval-(millis()/1000f);
   fill(0);
   rect(0, 0, screen_width * 0.8f, screen_length);
   loading_screen.loop();
   image(loading_screen, (screen_width * 0.8f) / 2 - loading_screen.width / 2, screen_length / 2 - loading_screen.height / 2);
-  if (timeAccumulator >= 4)
+  
+  if (time == 0)
   {
+      loading_screen.stop();
       menu_choice = 0;
       return;
   }//end if
@@ -361,16 +371,32 @@ void menu()
   }//end for
 }//end menu
 
+void welcome()
+{
+  fill(#3451A2);
+  rect(0, 0, screen_width * 0.8f, screen_length);
+  
+  for(int i = 0; i < 5; i++)
+  {
+    if(menu_colours[i])
+    {
+      menu_choice = i + 1;
+    }//end if
+  }//end for
+}//end welcome
+
 void briefing()
 {
   fill(#BA3CC1);
   rect(0, 0, screen_width * 0.8f, screen_length);
+  
 }//end briefing
 
 void soldiers()
 {
   fill(#138346);
   rect(0, 0, screen_width * 0.8f, screen_length);
+  
 }//end soldiers
 
 void crafts()
