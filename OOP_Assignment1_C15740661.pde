@@ -20,7 +20,8 @@ float menu_border, menu_button ,menu_gap ,menu_width ,menu_padding;
 int menu_choice;
   
 boolean on = false;
-boolean[] menu_colours = new boolean[5];
+boolean load = false;
+boolean[] menu_colours = new boolean[6];
 
 void draw()
 {
@@ -241,7 +242,9 @@ void mousePressed()
     }//end if
     else
     {
+      load = true;
       on = true;
+      menu_colours[0] = true;
     }//end else
   }//end if
   
@@ -249,43 +252,43 @@ void mousePressed()
   {
     if( mouseY >= border + menu_border + (corner * 0.9) && mouseY <= border + menu_border + (corner * 0.9) + menu_button)
     {
-        for(int i = 0; i < 5; i++)
-        {
-          menu_colours[i] = false;
-        }//end
-        menu_colours[0] = true;
-    }//end if
-    else if( mouseY >= border + menu_border + (corner * 0.9) + menu_gap + menu_button && mouseY <= border + menu_border + (corner * 0.9) + menu_gap + (2 * menu_button))
-    {
-        for(int i = 0; i < 5; i++)
+        for(int i = 0; i < 6; i++)
         {
           menu_colours[i] = false;
         }//end
         menu_colours[1] = true;
     }//end if
-    else if( mouseY >= border + menu_border + (corner * 0.9) + (2 * menu_gap) + (2 * menu_button) && mouseY <= border + menu_border + (corner * 0.9) + (2 * menu_gap) + (3 * menu_button))
+    else if( mouseY >= border + menu_border + (corner * 0.9) + menu_gap + menu_button && mouseY <= border + menu_border + (corner * 0.9) + menu_gap + (2 * menu_button))
     {
-        for(int i = 0; i < 5; i++)
+        for(int i = 0; i < 6; i++)
         {
           menu_colours[i] = false;
         }//end
         menu_colours[2] = true;
     }//end if
-    else if( mouseY >= border + menu_border + (corner * 0.9) + (3 * menu_gap) + (3 * menu_button) && mouseY <= border + menu_border + (corner * 0.9) + (3 * menu_gap) + (4 * menu_button))
+    else if( mouseY >= border + menu_border + (corner * 0.9) + (2 * menu_gap) + (2 * menu_button) && mouseY <= border + menu_border + (corner * 0.9) + (2 * menu_gap) + (3 * menu_button))
     {
-        for(int i = 0; i < 5; i++)
+        for(int i = 0; i < 6; i++)
         {
           menu_colours[i] = false;
         }//end
         menu_colours[3] = true;
     }//end if
-    else if( mouseY >= border + menu_border + (corner * 0.9) + (4 * menu_gap) + (4 * menu_button) && mouseY <= border + menu_border + (corner * 0.9) + (4 * menu_gap) + (5 * menu_button))
+    else if( mouseY >= border + menu_border + (corner * 0.9) + (3 * menu_gap) + (3 * menu_button) && mouseY <= border + menu_border + (corner * 0.9) + (3 * menu_gap) + (4 * menu_button))
     {
-        for(int i = 0; i < 5; i++)
+        for(int i = 0; i < 6; i++)
         {
           menu_colours[i] = false;
         }//end
         menu_colours[4] = true;
+    }//end if
+    else if( mouseY >= border + menu_border + (corner * 0.9) + (4 * menu_gap) + (4 * menu_button) && mouseY <= border + menu_border + (corner * 0.9) + (4 * menu_gap) + (5 * menu_button))
+    {
+        for(int i = 0; i < 6; i++)
+        {
+          menu_colours[i] = false;
+        }//end
+        menu_colours[5] = true;
     }//end if
   }//end if
 }//end on_off
@@ -301,19 +304,29 @@ void loading()
   //timeDelta = (now - last)/ 1000f;  
   //last = now;  
   //timeAccumulator += timeDelta;
-  float time;
-  float interval = 4;
-  time = interval-(millis()/1000f);
+  //float time;
+  //float interval = 4;
+  //time = interval-(millis()/1000f);
   fill(0);
   rect(0, 0, screen_width * 0.8f, screen_length);
   loading_screen.loop();
   image(loading_screen, (screen_width * 0.8f) / 2 - loading_screen.width / 2, screen_length / 2 - loading_screen.height / 2);
   
-  if (time == 0)
+  if (frameCount % 60 == 0)
   {
+    if(load)
+    {
       loading_screen.stop();
-      menu_choice = 0;
+      load = false;
+      for(int i = 0; i < 6; i++)
+      {
+        if(menu_colours[i])
+        {
+          menu_choice = i;
+        }//end if
+      }//end for
       return;
+    }//end if
   }//end if
 }//end loading
 
@@ -333,7 +346,7 @@ void menu()
     textSize(24);
     textAlign(CENTER, CENTER);
     
-    if(menu_colours[i])
+    if(menu_colours[i + 1])
     {
       fill(#0635BF);
     }//end if
@@ -376,20 +389,29 @@ void welcome()
   fill(#3451A2);
   rect(0, 0, screen_width * 0.8f, screen_length);
   
-  for(int i = 0; i < 5; i++)
+  for(int i = 0; i < 6; i++)
   {
     if(menu_colours[i])
     {
-      menu_choice = i + 1;
+      menu_choice = i;
     }//end if
   }//end for
 }//end welcome
 
 void briefing()
 {
+  load = true;
+  loading();
   fill(#BA3CC1);
   rect(0, 0, screen_width * 0.8f, screen_length);
   
+  for(int i = 0; i < 6; i++)
+  {
+    if(menu_colours[i])
+    {
+      menu_choice = i;
+    }//end if
+  }//end for
 }//end briefing
 
 void soldiers()
@@ -397,22 +419,53 @@ void soldiers()
   fill(#138346);
   rect(0, 0, screen_width * 0.8f, screen_length);
   
+  for(int i = 0; i < 6; i++)
+  {
+    if(menu_colours[i])
+    {
+      menu_choice = i;
+    }//end if
+  }//end for
 }//end soldiers
 
 void crafts()
 {
   fill(#836B13);
   rect(0, 0, screen_width * 0.8f, screen_length);
+  
+  for(int i = 0; i < 6; i++)
+  {
+    if(menu_colours[i])
+    {
+      menu_choice = i;
+    }//end if
+  }//end for
 }//end craft
 
 void tech()
 {
   fill(#8E2818);
   rect(0, 0, screen_width * 0.8f, screen_length);
+  
+  for(int i = 0; i < 6; i++)
+  {
+    if(menu_colours[i])
+    {
+      menu_choice = i;
+    }//end if
+  }//end for
 }//end tech
 
 void council()
 {
   fill(#67DFFF);
   rect(0, 0, screen_width * 0.8f, screen_length);
+  
+  for(int i = 0; i < 6; i++)
+  {
+    if(menu_colours[i])
+    {
+      menu_choice = i;
+    }//end if
+  }//end for
 }//end council
