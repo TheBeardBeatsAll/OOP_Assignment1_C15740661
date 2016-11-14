@@ -21,10 +21,10 @@ int menu_choice;
   
 boolean on = false;
 boolean load = false;
-boolean[] menu_colours = new boolean[6];
 
 void draw()
 {
+  stroke(0);
   background(15);
   
   pushMatrix();
@@ -62,8 +62,6 @@ void initialize()
   menu_gap = menu_button * 0.25f;
   menu_width = screen_width * 0.18f;
   menu_padding = screen_width * 0.01f;
-  
-  stroke(0);
 }//initialize
 
 void createPDA()
@@ -163,11 +161,6 @@ void on_off()
   {
     fill(#810103);
     ellipse(handle_width / 2, - radius * 0.9f, radius, radius);
-    
-    for(int i = 0; i < 5; i++)
-    {
-       menu_colours[i] = false;
-    }//end 
   }//end else
   arc(handle_width / 2, - radius * 0.9f, radius/2, radius/2, - THIRD_PI, PI + THIRD_PI, OPEN);
   line(handle_width / 2, - radius * 0.9f,  handle_width / 2, -radius * 1.2f);
@@ -244,7 +237,7 @@ void mousePressed()
     {
       load = true;
       on = true;
-      menu_colours[0] = true;
+      menu_choice = 100;
     }//end else
   }//end if
   
@@ -252,79 +245,40 @@ void mousePressed()
   {
     if( mouseY >= border + menu_border + (corner * 0.9) && mouseY <= border + menu_border + (corner * 0.9) + menu_button)
     {
-        for(int i = 0; i < 6; i++)
-        {
-          menu_colours[i] = false;
-        }//end
-        menu_colours[1] = true;
+        menu_choice = 1;
     }//end if
     else if( mouseY >= border + menu_border + (corner * 0.9) + menu_gap + menu_button && mouseY <= border + menu_border + (corner * 0.9) + menu_gap + (2 * menu_button))
     {
-        for(int i = 0; i < 6; i++)
-        {
-          menu_colours[i] = false;
-        }//end
-        menu_colours[2] = true;
+        menu_choice = 2;
     }//end if
     else if( mouseY >= border + menu_border + (corner * 0.9) + (2 * menu_gap) + (2 * menu_button) && mouseY <= border + menu_border + (corner * 0.9) + (2 * menu_gap) + (3 * menu_button))
     {
-        for(int i = 0; i < 6; i++)
-        {
-          menu_colours[i] = false;
-        }//end
-        menu_colours[3] = true;
+        menu_choice = 3;
     }//end if
     else if( mouseY >= border + menu_border + (corner * 0.9) + (3 * menu_gap) + (3 * menu_button) && mouseY <= border + menu_border + (corner * 0.9) + (3 * menu_gap) + (4 * menu_button))
     {
-        for(int i = 0; i < 6; i++)
-        {
-          menu_colours[i] = false;
-        }//end
-        menu_colours[4] = true;
+        menu_choice = 4;
     }//end if
     else if( mouseY >= border + menu_border + (corner * 0.9) + (4 * menu_gap) + (4 * menu_button) && mouseY <= border + menu_border + (corner * 0.9) + (4 * menu_gap) + (5 * menu_button))
     {
-        for(int i = 0; i < 6; i++)
-        {
-          menu_colours[i] = false;
-        }//end
-        menu_colours[5] = true;
+        menu_choice = 5;
     }//end if
   }//end if
 }//end on_off
 
 void loading()
 {
-  //float timeDelta = 0;
-  //float timeAccumulator = 0;
-
-  //int last = 0;
-  //int now = millis();
-  
-  //timeDelta = (now - last)/ 1000f;  
-  //last = now;  
-  //timeAccumulator += timeDelta;
-  //float time;
-  //float interval = 4;
-  //time = interval-(millis()/1000f);
   fill(0);
   rect(0, 0, screen_width * 0.8f, screen_length);
-  loading_screen.loop();
+  loading_screen.play();
   image(loading_screen, (screen_width * 0.8f) / 2 - loading_screen.width / 2, screen_length / 2 - loading_screen.height / 2);
   
   if (frameCount % 60 == 0)
   {
     if(load)
     {
-      loading_screen.stop();
       load = false;
-      for(int i = 0; i < 6; i++)
-      {
-        if(menu_colours[i])
-        {
-          menu_choice = i;
-        }//end if
-      }//end for
+      menu_choice = 0;
       return;
     }//end if
   }//end if
@@ -346,7 +300,7 @@ void menu()
     textSize(24);
     textAlign(CENTER, CENTER);
     
-    if(menu_colours[i + 1])
+    if(menu_choice == i + 1)
     {
       fill(#0635BF);
     }//end if
@@ -359,7 +313,7 @@ void menu()
     if(i == 0)
     {
       fill(0);
-      text("Briefing", (screen_width * 0.2f) / 2, menu_border + ( menu_button / 2 ) +((i * menu_gap) + (i * menu_button)));
+      text("Mission", (screen_width * 0.2f) / 2, menu_border + ( menu_button / 2 ) +((i * menu_gap) + (i * menu_button)));
     }//end if
     else if(i == 1)
     {
@@ -389,29 +343,13 @@ void welcome()
   fill(#3451A2);
   rect(0, 0, screen_width * 0.8f, screen_length);
   
-  for(int i = 0; i < 6; i++)
-  {
-    if(menu_colours[i])
-    {
-      menu_choice = i;
-    }//end if
-  }//end for
 }//end welcome
 
 void briefing()
 {
-  load = true;
-  loading();
   fill(#BA3CC1);
   rect(0, 0, screen_width * 0.8f, screen_length);
   
-  for(int i = 0; i < 6; i++)
-  {
-    if(menu_colours[i])
-    {
-      menu_choice = i;
-    }//end if
-  }//end for
 }//end briefing
 
 void soldiers()
@@ -419,13 +357,6 @@ void soldiers()
   fill(#138346);
   rect(0, 0, screen_width * 0.8f, screen_length);
   
-  for(int i = 0; i < 6; i++)
-  {
-    if(menu_colours[i])
-    {
-      menu_choice = i;
-    }//end if
-  }//end for
 }//end soldiers
 
 void crafts()
@@ -433,13 +364,6 @@ void crafts()
   fill(#836B13);
   rect(0, 0, screen_width * 0.8f, screen_length);
   
-  for(int i = 0; i < 6; i++)
-  {
-    if(menu_colours[i])
-    {
-      menu_choice = i;
-    }//end if
-  }//end for
 }//end craft
 
 void tech()
@@ -447,13 +371,6 @@ void tech()
   fill(#8E2818);
   rect(0, 0, screen_width * 0.8f, screen_length);
   
-  for(int i = 0; i < 6; i++)
-  {
-    if(menu_colours[i])
-    {
-      menu_choice = i;
-    }//end if
-  }//end for
 }//end tech
 
 void council()
@@ -461,11 +378,4 @@ void council()
   fill(#67DFFF);
   rect(0, 0, screen_width * 0.8f, screen_length);
   
-  for(int i = 0; i < 6; i++)
-  {
-    if(menu_colours[i])
-    {
-      menu_choice = i;
-    }//end if
-  }//end for
 }//end council
