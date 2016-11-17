@@ -190,7 +190,7 @@ void screen()
       }//end case
       case 1:       
       {
-        briefing();
+        missions();
         break;
       }//end case
       case 2:
@@ -268,18 +268,24 @@ void mousePressed()
 
 void loading()
 {
-  fill(0);
-  rect(0, 0, screen_width * 0.8f, screen_length);
-  loading_screen.play();
-  image(loading_screen, (screen_width * 0.8f) / 2 - loading_screen.width / 2, screen_length / 2 - loading_screen.height / 2);
-  
-  if (frameCount % 60 == 0)
+  if(load)
   {
-    if(load)
+    fill(0);
+    rect(0, 0, screen_width * 0.8f, screen_length);
+    loading_screen.play();
+    image(loading_screen, (screen_width * 0.8f) / 2 - loading_screen.width / 2, screen_length / 2 - loading_screen.height / 2);
+    
+    if (frameCount % 60 == 0)
     {
-      load = false;
-      menu_choice = 0;
-      return;
+      //if(load)
+      //{
+        load = false;
+        if(menu_choice == 100)
+        {
+          menu_choice = 0;
+        }//end if
+        //return;
+      //}//end if
     }//end if
   }//end if
 }//end loading
@@ -313,7 +319,7 @@ void menu()
     if(i == 0)
     {
       fill(0);
-      text("Mission", (screen_width * 0.2f) / 2, menu_border + ( menu_button / 2 ) +((i * menu_gap) + (i * menu_button)));
+      text("Missions", (screen_width * 0.2f) / 2, menu_border + ( menu_button / 2 ) +((i * menu_gap) + (i * menu_button)));
     }//end if
     else if(i == 1)
     {
@@ -323,7 +329,7 @@ void menu()
     else if(i == 2)
     {
       fill(0);
-      text("Craft", (screen_width * 0.2f) / 2, menu_border + ( menu_button / 2 ) +((i * menu_gap) + (i * menu_button)));
+      text("Crafts", (screen_width * 0.2f) / 2, menu_border + ( menu_button / 2 ) +((i * menu_gap) + (i * menu_button)));
     }//end else if
     else if(i == 3)
     {
@@ -345,7 +351,7 @@ void welcome()
   
 }//end welcome
 
-void briefing()
+void missions()
 {
   fill(#BA3CC1);
   rect(0, 0, screen_width * 0.8f, screen_length);
