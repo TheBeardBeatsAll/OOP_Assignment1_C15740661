@@ -1,6 +1,5 @@
 class Mission
 {
-
   String type;
   String rewards;
   int difficulty;
@@ -11,6 +10,8 @@ class Mission
   String alien2_name;
   int alien3_amount;
   String alien3_name;
+  int alien4_amount;
+  String alien4_name;
   String description;
   
   Mission(TableRow row)
@@ -25,7 +26,9 @@ class Mission
     this.alien2_name = row.getString(7);
     this.alien3_amount = row.getInt(8);
     this.alien3_name = row.getString(9);
-    this.description = row.getString(10);
+    this.alien4_amount = row.getInt(10);
+    this.alien4_name = row.getString(11);
+    this.description = row.getString(12);
   }//end constructor
 
 }//end mission
