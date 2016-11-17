@@ -4,7 +4,7 @@ class Country
   String continent;
   int supplies;
   boolean radio;
-  String threat;
+  int threat;
   
   Country(TableRow row)
   {
@@ -19,6 +19,6 @@ class Country
     {
       this.radio = false;
     }//end else
-    this.threat = row.getString(4);
+    this.threat = row.getInt(4);
   }//end constructor
 }//end Country
