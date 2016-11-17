@@ -5,6 +5,8 @@ class Country
   int supplies;
   boolean radio;
   int threat;
+  String thrt;
+  color t;
   
   Country(TableRow row)
   {
