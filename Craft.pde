@@ -5,6 +5,7 @@ class Craft
   String wp1;
   String wp2;
   String wp3;
+  String wp4;
   float fuel;
   String armour;
   String description;
@@ -16,8 +17,9 @@ class Craft
     this.wp1 = row.getString(2);
     this.wp2 = row.getString(3);
     this.wp3 = row.getString(4);
-    this.fuel = row.getFloat(5);
-    this.armour = row.getString(6);
-    this.description = row.getString(7);
+    this.wp3 = row.getString(5);
+    this.fuel = row.getFloat(6);
+    this.armour = row.getString(7);
+    this.description = row.getString(8);
   }//end constructor
 }//end Craft
