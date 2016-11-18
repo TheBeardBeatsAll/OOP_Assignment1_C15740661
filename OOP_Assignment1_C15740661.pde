@@ -22,6 +22,14 @@ int menu_choice;
 boolean on = false;
 boolean load = false;
 
+Table t;
+
+ArrayList<Mission> missions = new ArrayList<Mission>();
+ArrayList<Tech> items = new ArrayList<Tech>();
+ArrayList<Country> countries = new ArrayList<Country>();
+ArrayList<Craft> aircraft = new ArrayList<Craft>();
+ArrayList<Soldier> soldiers = new ArrayList<Soldier>();
+
 void draw()
 {
   stroke(0);
@@ -62,7 +70,48 @@ void initialize()
   menu_gap = menu_button * 0.25f;
   menu_width = screen_width * 0.18f;
   menu_padding = screen_width * 0.01f;
+  
+  loadData();
 }//initialize
+
+void loadData()
+{
+  countries.clear();
+  missions.clear();
+  items.clear();
+  aircraft.clear();
+  
+  t = loadTable("mission.csv", "csv");
+  for(TableRow row : t.rows())
+  {
+    Mission m = new Mission(row);
+    missions.add(m);
+  }//end for
+  t = loadTable("council.csv", "csv");
+  for(TableRow row : t.rows())
+  {
+    Country c = new Country(row);
+    countries.add(c);
+  }//end for
+  t = loadTable("tech.csv", "csv");
+  for(TableRow row : t.rows())
+  {
+    Tech te = new Tech(row);
+    items.add(te);
+  }//end for
+  t = loadTable("craft.csv", "csv");
+  for(TableRow row : t.rows())
+  {
+    Craft cr = new Craft(row);
+    aircraft.add(cr);
+  }//end for
+  t = loadTable("soldiers.csv", "csv");
+  for(TableRow row : t.rows())
+  {
+    Soldier s = new Soldier(row);
+    soldiers.add(s);
+  }//end for
+}//end loadData
 
 void createPDA()
 {
