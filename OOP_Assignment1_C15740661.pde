@@ -110,7 +110,7 @@ void loadData()
   {
     Soldier s = new Soldier(row);
     soldiers.add(s);
-  }//end for
+  }//end for 
 }//end loadData
 
 void createPDA()

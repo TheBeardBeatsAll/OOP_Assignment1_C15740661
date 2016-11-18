@@ -22,4 +22,5 @@ class Country
     }//end else
     this.threat = row.getString(4);
   }//end constructor
+  
 }//end Country
