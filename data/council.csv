@@ -1,14 +1,14 @@
-China,Asia,125,0,Sigma
-Japan,Asia,130,1,Kappa
-Australia,Asia,70,0,Omega
-Egypt,Africa,100,1,Zeta
-South Africa,Africa,95,0,Zeta
-Nigeria,Africa,75,0,Kappa
+China,Asia,125,0,Delta
+Japan,Asia,130,1,Gamma
+Australia,Asia,70,0,Epsilon
+Egypt,Africa,100,1,Beta
+South Africa,Africa,95,0,Beta
+Nigeria,Africa,75,0,Gamma
 Germany,Europe,140,1,Alpha
-France,Europe,120,1,Zeta
-Russia,Europe,80,0,Omega
-Canada,North America,110,0,Sigma
-Mexico,North America,100,1,Zeta
+France,Europe,120,1,Beta
+Russia,Europe,80,0,Epsilon
+Canada,North America,110,0,Delta
+Mexico,North America,100,1,Beta
 United States,North America,170,1,Alpha
 Argentina,South America,65,0,Alpha
-Brazil,South America,95,1,Zeta
+Brazil,South America,95,1,Beta
