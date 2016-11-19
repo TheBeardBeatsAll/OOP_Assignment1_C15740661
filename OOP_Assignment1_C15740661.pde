@@ -1,7 +1,6 @@
 void setup()
 {
   fullScreen();
-  loading_screen = new Gif(this, "XCOM_Shield_Logo.gif");
   initialize();
   createPDA();
 }//end setup
@@ -11,6 +10,7 @@ import gifAnimation.*;
 Gif loading_screen;
 
 PShape pda, outer, inner, handle;
+PImage backg;
 
 float border, pda_width, pda_length;
 float handle_length, handle_width, corner;
@@ -33,7 +33,7 @@ ArrayList<Soldier> soldiers = new ArrayList<Soldier>();
 void draw()
 {
   stroke(0);
-  background(15);
+  background(backg);
   
   pushMatrix();
   translate(border, border);
@@ -71,8 +71,16 @@ void initialize()
   menu_width = screen_width * 0.18f;
   menu_padding = screen_width * 0.01f;
   
+  loadImages();
   loadData();
 }//initialize
+
+void loadImages()
+{
+  loading_screen = new Gif(this, "XCOM_Shield_Logo.gif");
+  backg = loadImage("background.jpg");
+  backg.resize(width,height);
+}//end loadImages
 
 void loadData()
 {
