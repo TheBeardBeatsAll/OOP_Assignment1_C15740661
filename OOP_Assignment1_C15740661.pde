@@ -16,6 +16,7 @@ float border, pda_width, pda_length;
 float handle_length, handle_width, corner;
 float screen_width, screen_length, radius;
 float menu_border, menu_button ,menu_gap ,menu_width ,menu_padding;
+float gap_cl, space_cl;
 
 int menu_choice;
   
@@ -25,7 +26,9 @@ boolean load = false;
 Table t;
 
 ArrayList<Mission> missions = new ArrayList<Mission>();
-ArrayList<Tech> items = new ArrayList<Tech>();
+ArrayList<Tech> armour = new ArrayList<Tech>();
+ArrayList<Tech> weapon = new ArrayList<Tech>();
+ArrayList<Tech> utility = new ArrayList<Tech>();
 ArrayList<Country> countries = new ArrayList<Country>();
 ArrayList<Craft> aircraft = new ArrayList<Craft>();
 ArrayList<Soldier> soldiers = new ArrayList<Soldier>();
@@ -47,6 +50,8 @@ void draw()
   translate(border + (corner * 0.9), border + (corner * 0.9));
   screen();
   popMatrix();
+  
+  mouseOver();
 }//end draw
 
 void initialize()
@@ -71,6 +76,9 @@ void initialize()
   menu_width = screen_width * 0.18f;
   menu_padding = screen_width * 0.01f;
   
+  gap_cl = screen_width * 0.04;
+  space_cl = (screen_length - (gap_cl * 4.5)) / 29.0;
+  
   loadImages();
   loadData();
 }//initialize
@@ -86,7 +94,9 @@ void loadData()
 {
   countries.clear();
   missions.clear();
-  items.clear();
+  armour.clear();
+  weapon.clear();
+  utility.clear();
   aircraft.clear();
   
   t = loadTable("mission.csv", "csv");
@@ -105,7 +115,18 @@ void loadData()
   for(TableRow row : t.rows())
   {
     Tech te = new Tech(row);
-    items.add(te);
+    if(te.type == 1)
+    {
+      armour.add(te);
+    }//end if
+    else if(te.type == 2)
+    {
+      weapon.add(te);
+    }//end else if
+    else if(te.type == 3)
+    {
+      utility.add(te);
+    }//end else if
   }//end for
   t = loadTable("craft.csv", "csv");
   for(TableRow row : t.rows())
@@ -404,41 +425,105 @@ void menu()
 void welcome()
 {
   fill(#3451A2);
-  rect(0, 0, screen_width * 0.8f, screen_length);
+  rect(0, 0, screen_width * 0.8, screen_length);
   
 }//end welcome
 
 void missions()
 {
   fill(#BA3CC1);
-  rect(0, 0, screen_width * 0.8f, screen_length);
+  rect(0, 0, screen_width * 0.8, screen_length);
   
 }//end briefing
 
 void soldiers()
 {
   fill(#138346);
-  rect(0, 0, screen_width * 0.8f, screen_length);
+  rect(0, 0, screen_width * 0.8, screen_length);
   
 }//end soldiers
 
 void crafts()
 {
   fill(#836B13);
-  rect(0, 0, screen_width * 0.8f, screen_length);
+  rect(0, 0, screen_width * 0.8, screen_length);
   
 }//end craft
 
 void tech()
 {
   fill(#8E2818);
-  rect(0, 0, screen_width * 0.8f, screen_length);
+  rect(0, 0, screen_width * 0.8, screen_length);
   
 }//end tech
 
 void council()
 {
-  fill(#67DFFF);
-  rect(0, 0, screen_width * 0.8f, screen_length);
+  float gap_cl = screen_width * 0.04;
+  float space_cl = (screen_length - (gap_cl * 4.5)) / 29.0;
+  float x ,y;
   
+  
+  fill(#67DFFF);
+  rect(0, 0, screen_width * 0.8, screen_length);
+  
+  fill(255);
+  noStroke();
+  rect(gap_cl * 0.75, gap_cl / 2.0, (screen_width * 0.8) - (gap_cl * 1.5), gap_cl * 2.0);
+ 
+  fill(255);
+  stroke(0);
+  rect(gap_cl * 2, screen_length  - (gap_cl * 2.0), (screen_width * 0.8) - (gap_cl * 4.0), gap_cl * 1.5);
+  
+  for(int i = 0; i < countries.size(); i++)
+  {
+    Country c = countries.get(i);
+    if(i < countries.size() / 2)
+    {
+      x = 0;
+      y = 0;
+    }//end if
+    else
+    {
+      x = (screen_width * 0.4);
+      y = countries.size() / 2;
+    }//end else
+    fill(255);
+    rect((gap_cl * 1.25) + x, (space_cl + (gap_cl * 2.5)) + ((i - y) * (space_cl * 4)), (screen_width * 0.4) - (gap_cl * 2.5),(space_cl * 3.0));
+    
+    textSize(22);
+    textAlign(CENTER, CENTER);
+    fill(0);
+    text(c.region, (screen_width * 0.2f) + x, ((space_cl * 2.5) + (gap_cl * 2.5)) + ((i - y) * (space_cl * 4)));
+  }//end for
 }//end council
+
+void mouseOver()
+{
+  float x, y;
+  
+  if(menu_choice == 5)
+  {
+    for(int i = 0; i < countries.size(); i++)
+    {
+      Country c = countries.get(i);
+      if(i < countries.size() / 2)
+      {
+        x = 0;
+        y = 0;
+      }//end if
+      else
+      {
+        x = (screen_width * 0.4);
+        y = countries.size() / 2;
+      }//end else
+      if(mouseX > ((gap_cl * 1.25) + x + border + (corner * 0.9)) && mouseX < (((screen_width * 0.4) + x + border  + (corner * 0.9)) - (gap_cl * 1.25)))
+      {
+        if(mouseY > ((space_cl + border + (corner * 0.9) + (gap_cl * 2.5)) + ((i - y) * (space_cl * 4))) && mouseY < (((space_cl * 4.0) + border + (corner * 0.9) + (gap_cl * 2.5)) + ((i - y) * (space_cl * 4))))
+        {
+          rect(mouseX, mouseY, 25, 25);
+        }//end if
+      }//end if
+    }//end for
+  }//end if
+}//end mouseOver

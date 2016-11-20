@@ -5,6 +5,7 @@ class Country
   int supplies;
   boolean radio;
   String threat;
+  String report;
   color t;
   
   Country(TableRow row)
@@ -21,6 +22,7 @@ class Country
       this.radio = false;
     }//end else
     this.threat = row.getString(4);
+    this.report = row.getString(4);
   }//end constructor
   
 }//end Country

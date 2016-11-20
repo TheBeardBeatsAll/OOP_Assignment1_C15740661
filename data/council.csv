@@ -1,14 +1,14 @@
-China,Asia,125,0,Delta
-Japan,Asia,130,1,Gamma
-Australia,Asia,70,0,Epsilon
-Egypt,Africa,100,1,Beta
-South Africa,Africa,95,0,Beta
-Nigeria,Africa,75,0,Gamma
-Germany,Europe,140,1,Alpha
-France,Europe,120,1,Beta
-Russia,Europe,80,0,Epsilon
-Canada,North America,110,0,Delta
-Mexico,North America,100,1,Beta
-United States,North America,170,1,Alpha
-Argentina,South America,65,0,Alpha
-Brazil,South America,95,1,Beta
+China,Asia,125,0,Delta,a
+Japan,Asia,130,1,Gamma,a
+Australia,Asia,70,0,Epsilon,a
+Egypt,Africa,100,1,Beta,a
+South Africa,Africa,95,0,Beta,a
+Nigeria,Africa,75,0,Gamma,a
+Germany,Europe,140,1,Alpha,a
+France,Europe,120,1,Beta,a
+Russia,Europe,80,0,Epsilon,a
+Canada,North America,110,0,Delta,a
+Mexico,North America,100,1,Beta,a
+United States,North America,170,1,Alpha,a
+Argentina,South America,65,0,Alpha,a
+Brazil,South America,95,1,Beta,a
