@@ -156,7 +156,7 @@ void createPDA()
   pda = createShape(GROUP);
   outer = createShape();
   outer.beginShape();
-  outer.fill(0, 0, 125);
+  outer.fill(#106738);
   outer.stroke(0);
   outer.vertex(corner, 0);
   outer.vertex(pda_width - corner, 0);
@@ -181,7 +181,7 @@ void createPDA()
   pda = createShape(GROUP);
   inner = createShape();
   inner.beginShape();
-  inner.fill(0, 125, 125);
+  inner.fill(#71C497);
   inner.stroke(0);
   inner.vertex(corner + gap_theta, gap_theta);
   inner.vertex(pda_width - (gap_theta + corner), gap_theta);
@@ -217,13 +217,13 @@ void drawHandle()
   {
     if( i % 7 == 0 )
     {
-      fill(#BC5220);
+      fill(#0E416C);
       rect(0, j*space*7, handle_width, space);
       j++;
     }//end else
     else if( (i - 1) % 7 == 0)
     {
-      fill(#5A260E);
+      fill(#7197B7);
       rect(0, k*space, handle_width, space * 6);
       k = k + 7;
     }//end else
@@ -251,7 +251,7 @@ void screen()
 {
   float gap = screen_width * 0.006f;
   
-  fill(#898080);
+  fill(#106738);
   rect( - gap, - gap, screen_width + (gap * 2), screen_length + (gap *  2));
   if(on)
   {
@@ -365,7 +365,7 @@ void loading()
         {
           menu_choice = 0;
         }//end if
-        //return;
+        return;
       //}//end if
     }//end if
   }//end if
@@ -373,7 +373,7 @@ void loading()
 
 void menu()
 {
-  fill(#6F3A5F);
+  fill(#9CCE64);
   rect(0, 0, screen_width * 0.2f, screen_length);
   
   fill(0);
@@ -389,11 +389,11 @@ void menu()
     
     if(menu_choice == i + 1)
     {
-      fill(#0635BF);
+      fill(#020ACB);
     }//end if
     else
     {
-      fill(#60EFF5);
+      fill(#797FE3);
     }//end else
     rect(menu_padding, menu_border + ((i * menu_gap) + (i * menu_button)), menu_width, menu_button);
 
@@ -427,22 +427,19 @@ void menu()
 
 void welcome()
 {
-  fill(#3451A2);
-  rect(0, 0, screen_width * 0.8, screen_length);
+  screen_back();
   
 }//end welcome
 
 void missions()
 {
-  fill(#BA3CC1);
-  rect(0, 0, screen_width * 0.8, screen_length);
+  screen_back();
   
 }//end briefing
 
 void soldiers()
 {
-  fill(#138346);
-  rect(0, 0, screen_width * 0.8, screen_length);
+  screen_back();
   
 }//end soldiers
 
@@ -464,6 +461,9 @@ void council()
   
   float x ,y;
   
+  stroke(0);
+  noFill();
+  rect(gap_cl * 2.0, gap_cl / 3.0, (screen_width * 0.8) - (gap_cl * 4), gap_cl * 2);
   image(map, gap_cl * 2.0, gap_cl / 3.0);
  
   fill(#B4F7FF);
