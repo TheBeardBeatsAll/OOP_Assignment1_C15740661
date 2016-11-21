@@ -352,7 +352,10 @@ void mousePressed()
         {
           soldier_choice = i;
           Soldier s = soldiers.get(i);
+          pushMatrix();
+          translate(screen_inlay + (screen_width * 0.25), screen_inlay);
           s.render();
+          popMatrix();
         }//end if
     }//end if
   }//end if
@@ -499,7 +502,7 @@ void council()
  
   fill(#B4F7FF);
   stroke(0);
-  rect(gap_cl * 3.0, screen_length  - (gap_cl * 1.5), (screen_width * 0.8) - (gap_cl * 6.0), gap_cl * 1.25);
+  rect(gap_cl * 3.0, screen_length  - (gap_cl * 1.5), (screen_width * 0.8) - (gap_cl * 6.0), gap_cl * 1.25, space_cl);
   
   textAlign(CENTER);
   fill(0);
