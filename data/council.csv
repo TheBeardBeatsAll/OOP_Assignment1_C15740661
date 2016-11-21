@@ -1,14 +1,14 @@
-China,Asia,65,No,Severe,One of ADVENT's HQ : Will advise to avoid until the Resistance is stronger
-Japan,Asia,120,Yes,Medium,Significant ADVENT activity : All missions in this region will face strong ADVENT patrols
-Australia,Asia,110,Yes,Marginal,ADVENT have no foothold here : Resistance territory
-Egypt,Africa,55,No,High,Heavily fortified ADVENT territory : Any OPs here will face tough opposition
-South Africa,Africa,105,Yes,Low,Light ADVENT activity : While Squads will face opposition they should easily deal with it
-Nigeria,Africa,75,Yes,Medium,Significant ADVENT activity : All missions in this region will face strong ADVENT patrols
-Germany,Europe,45,No,Severe,One of ADVENT's HQ : Will advise to avoid until the Resistance is stronger
-France,Europe,60,No,High,Heavily fortified ADVENT territory : Any OPs here will face tough opposition
-Russia,Europe,130,Yes,Low,Light ADVENT activity : While Squads will face opposition they should easily deal with it
-Canada,North America,125,Yes,Low,Light ADVENT activity : While Squads will face opposition they should easily deal with it
-Mexico,North America,100,Yes,Medium,Significant ADVENT activity : All missions in this region will face strong ADVENT patrols
-United States,North America,50,No,High,Heavily fortified ADVENT territory : Any OPs here will face tough opposition
-Argentina,South America,95,Yes,Marginal,ADVENT have no foothold here : Resistance territory
-Brazil,South America,80,Yes,Low,Light ADVENT activity : While Squads will face opposition they should easily deal with it
+China,65,Severe,One of ADVENT's HQ : AVOID
+Japan,120,Medium,Significant ADVENT activity in region
+Australia,110,Marginal,ADVENT have no foothold here
+Egypt,55,High,Heavily fortified ADVENT territory
+South Africa,105,Low,Light ADVENT activity in region
+Nigeria,75,Medium,Significant ADVENT activity in region
+Germany,45,Severe,One of ADVENT's HQ : AVOID
+France,60,High,Heavily fortified ADVENT territory
+Russia,130,Low,Light ADVENT activity in region
+Canada,125,Low,Light ADVENT activity in region
+Mexico,100,Medium,Significant ADVENT activity in region
+United States,50,High,Heavily fortified ADVENT territory
+Argentina,95,Marginal,ADVENT have no foothold here
+Brazil,80,Low,Light ADVENT activity in region

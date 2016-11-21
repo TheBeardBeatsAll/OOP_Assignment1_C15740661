@@ -10,7 +10,7 @@ import gifAnimation.*;
 Gif loading_screen;
 
 PShape pda, outer, inner, handle;
-PImage backg;
+PImage backg, map;
 
 float border, pda_width, pda_length, screen_inlay;
 float handle_length, handle_width, corner;
@@ -78,7 +78,7 @@ void initialize()
   menu_padding = screen_width * 0.01f;
   
   gap_cl = screen_width * 0.04;
-  space_cl = (screen_length - (gap_cl * 4.5)) / 29.0;
+  space_cl = (screen_length - (gap_cl * 3.8)) / 43.0;
   
   loadImages();
   loadData();
@@ -89,6 +89,8 @@ void loadImages()
   loading_screen = new Gif(this, "XCOM_Shield_Logo.gif");
   backg = loadImage("background.jpg");
   backg.resize(width,height);
+  map = loadImage("map.jpg");
+  map.resize((int)((screen_width * 0.8) - (gap_cl * 4)), (int)gap_cl * 2);
 }//end loadImages
 
 void loadData()
@@ -215,13 +217,13 @@ void drawHandle()
   {
     if( i % 7 == 0 )
     {
-      fill(125, 0, 125);
+      fill(#BC5220);
       rect(0, j*space*7, handle_width, space);
       j++;
     }//end else
     else if( (i - 1) % 7 == 0)
     {
-      fill(125, 125, 0);
+      fill(#5A260E);
       rect(0, k*space, handle_width, space * 6);
       k = k + 7;
     }//end else
@@ -446,33 +448,35 @@ void soldiers()
 
 void crafts()
 {
-  fill(#836B13);
-  rect(0, 0, screen_width * 0.8, screen_length);
+  screen_back();
   
 }//end craft
 
 void tech()
 {
-  fill(#8E2818);
-  rect(0, 0, screen_width * 0.8, screen_length);
+  screen_back();
   
 }//end tech
 
 void council()
 {
-  float gap_cl = screen_width * 0.04;
-  float space_cl = (screen_length - (gap_cl * 4.5)) / 29.0;
-  float x ,y;
-  
   screen_back();
   
-  fill(255);
-  noStroke();
-  rect(gap_cl * 0.75, gap_cl / 2.0, (screen_width * 0.8) - (gap_cl * 1.5), gap_cl * 2.0);
+  float x ,y;
+  
+  image(map, gap_cl * 2.0, gap_cl / 3.0);
  
-  fill(255);
+  fill(#B4F7FF);
   stroke(0);
-  rect(gap_cl * 2, screen_length  - (gap_cl * 2.0), (screen_width * 0.8) - (gap_cl * 4.0), gap_cl * 1.5);
+  rect(gap_cl * 3.0, screen_length  - (gap_cl * 1.5), (screen_width * 0.8) - (gap_cl * 6.0), gap_cl * 1.25);
+  
+  textAlign(CENTER);
+  fill(0);
+  textSize(14);
+  text("Monthly Report:", gap_cl * 3.0, screen_length  - (gap_cl * 1.5), (screen_width * 0.8) - (gap_cl * 6.0), gap_cl * 1.25);
+  textSize(11);
+  text("XCOM has been making great progress, slowly pushing ADVENT and their Alien Overlords back.\nPeople flock to our cause and the Avatar project has been hampered, keep up the good work",
+  gap_cl * 3.0, screen_length  - (gap_cl * 1.1), (screen_width * 0.8) - (gap_cl * 6.0), gap_cl * 1.25);
   
   for(int i = 0; i < countries.size(); i++)
   {
@@ -487,13 +491,7 @@ void council()
       x = (screen_width * 0.4);
       y = countries.size() / 2;
     }//end else
-    fill(255);
-    rect((gap_cl * 1.25) + x, (space_cl + (gap_cl * 2.5)) + ((i - y) * (space_cl * 4)), (screen_width * 0.4) - (gap_cl * 2.5),(space_cl * 3.0));
-    
-    textSize(22);
-    textAlign(CENTER, CENTER);
-    fill(0);
-    text(c.region, (screen_width * 0.2f) + x, ((space_cl * 2.5) + (gap_cl * 2.5)) + ((i - y) * (space_cl * 4)));
+    c.render(x, y, i);
   }//end for
 }//end council
 
@@ -521,28 +519,28 @@ void mouseOver()
 {
   float x, y;
   
-  if(menu_choice == 5)
+  if(menu_choice == 4)
   {
-    for(int i = 0; i < countries.size(); i++)
-    {
-      Country c = countries.get(i);
-      if(i < countries.size() / 2)
-      {
-        x = 0;
-        y = 0;
-      }//end if
-      else
-      {
-        x = (screen_width * 0.4);
-        y = countries.size() / 2;
-      }//end else
-      if(mouseX > ((gap_cl * 1.25) + x + border + (corner * 0.9)) && mouseX < (((screen_width * 0.4) + x + border  + (corner * 0.9)) - (gap_cl * 1.25)))
-      {
-        if(mouseY > ((space_cl + border + (corner * 0.9) + (gap_cl * 2.5)) + ((i - y) * (space_cl * 4))) && mouseY < (((space_cl * 4.0) + border + (corner * 0.9) + (gap_cl * 2.5)) + ((i - y) * (space_cl * 4))))
-        {
-          rect(mouseX, mouseY, 25, 25);
-        }//end if
-      }//end if
-    }//end for
+    //for(int i = 0; i < countries.size(); i++)
+    //{
+    //  Country c = countries.get(i);
+    //  if(i < countries.size() / 2)
+    //  {
+    //    x = 0;
+    //    y = 0;
+    //  }//end if
+    //  else
+    //  {
+    //    x = (screen_width * 0.4);
+    //    y = countries.size() / 2;
+    //  }//end else
+    //  if(mouseX > ((gap_cl * 1.25) + x + border + (corner * 0.9)) && mouseX < (((screen_width * 0.4) + x + border  + (corner * 0.9)) - (gap_cl * 1.25)))
+    //  {
+    //    if(mouseY > ((space_cl + border + (corner * 0.9) + (gap_cl * 2.5)) + ((i - y) * (space_cl * 4))) && mouseY < (((space_cl * 4.0) + border + (corner * 0.9) + (gap_cl * 2.5)) + ((i - y) * (space_cl * 4))))
+    //    {
+    //      rect(mouseX, mouseY, 25, 25);
+    //    }//end if
+    //  }//end if
+    //}//end for
   }//end if
 }//end mouseOver
