@@ -17,8 +17,9 @@ float handle_length, handle_width, corner;
 float screen_width, screen_length, radius;
 float menu_border, menu_button ,menu_gap ,menu_width ,menu_padding;
 float gap_cl, space_cl;
+float interval;
 
-int menu_choice;
+int menu_choice, soldier_choice;
   
 boolean on = false;
 boolean load = false;
@@ -80,8 +81,12 @@ void initialize()
   gap_cl = screen_width * 0.04;
   space_cl = (screen_length - (gap_cl * 3.8)) / 43.0;
   
+  soldier_choice = 100;
+  
   loadImages();
   loadData();
+  
+  interval = screen_length / soldiers.size();
 }//initialize
 
 void loadImages()
@@ -90,7 +95,7 @@ void loadImages()
   backg = loadImage("background.jpg");
   backg.resize(width,height);
   map = loadImage("map.jpg");
-  map.resize((int)((screen_width * 0.8) - (gap_cl * 4)), (int)gap_cl * 2);
+  map.resize((int)((screen_width * 0.8) - (gap_cl * 4))-1, (int)(gap_cl * 2)-1);
 }//end loadImages
 
 void loadData()
@@ -322,27 +327,33 @@ void mousePressed()
     }//end else
   }//end if
   
-  if( mouseX >= border + menu_padding + (corner * 0.9) + (screen_width * 0.8) && mouseX <= border + menu_padding + (corner * 0.9) + (screen_width * 0.8) + menu_width)
+  if( mouseX > screen_inlay + menu_padding  + (screen_width * 0.8) && mouseX < screen_inlay + menu_padding + (screen_width * 0.8) + menu_width)
   {
-    if( mouseY >= border + menu_border + (corner * 0.9) && mouseY <= border + menu_border + (corner * 0.9) + menu_button)
+    for(int i = 0; i < 5; i++)
+      if( mouseY > screen_inlay + menu_border + (i * (menu_gap + menu_button)) && mouseY < screen_inlay + menu_border + menu_button + (i * (menu_gap + menu_button)))
+      {
+        if(menu_choice == i + 1)
+        {
+          menu_choice = 0;
+        }//end if
+        else
+        {
+          menu_choice = i + 1;
+        }//end else
+      }//end if
+  }//end if
+  
+  if(menu_choice == 2)
+  {
+    if( mouseX > screen_inlay && mouseX < screen_inlay + (screen_width * 0.25))
     {
-        menu_choice = 1;
-    }//end if
-    else if( mouseY >= border + menu_border + (corner * 0.9) + menu_gap + menu_button && mouseY <= border + menu_border + (corner * 0.9) + menu_gap + (2 * menu_button))
-    {
-        menu_choice = 2;
-    }//end if
-    else if( mouseY >= border + menu_border + (corner * 0.9) + (2 * menu_gap) + (2 * menu_button) && mouseY <= border + menu_border + (corner * 0.9) + (2 * menu_gap) + (3 * menu_button))
-    {
-        menu_choice = 3;
-    }//end if
-    else if( mouseY >= border + menu_border + (corner * 0.9) + (3 * menu_gap) + (3 * menu_button) && mouseY <= border + menu_border + (corner * 0.9) + (3 * menu_gap) + (4 * menu_button))
-    {
-        menu_choice = 4;
-    }//end if
-    else if( mouseY >= border + menu_border + (corner * 0.9) + (4 * menu_gap) + (4 * menu_button) && mouseY <= border + menu_border + (corner * 0.9) + (4 * menu_gap) + (5 * menu_button))
-    {
-        menu_choice = 5;
+      for(int i = 0; i < soldiers.size(); i++)
+        if( mouseY > screen_inlay + (i * interval) && mouseY < screen_inlay + interval + (i * interval))
+        {
+          soldier_choice = i;
+          Soldier s = soldiers.get(i);
+          s.render();
+        }//end if
     }//end if
   }//end if
 }//end on_off
@@ -393,7 +404,7 @@ void menu()
     }//end if
     else
     {
-      fill(#797FE3);
+      fill(#79ADFF);
     }//end else
     rect(menu_padding, menu_border + ((i * menu_gap) + (i * menu_button)), menu_width, menu_button);
 
@@ -441,6 +452,26 @@ void soldiers()
 {
   screen_back();
   
+  for(int i = 0; i < soldiers.size(); i++)
+  {
+    Soldier s = soldiers.get(i);
+    
+    if(soldier_choice == i)
+    {
+      fill(#020ACB);
+    }//end if
+    else
+    {
+      fill(#79ADFF);
+    }//end else
+    stroke(0);
+    rect(0, (i * interval), screen_width * 0.25, interval);
+    
+    textSize(12);
+    textAlign(CENTER, CENTER);
+    fill(0);
+    text(s.rank + ". " + s.name + " '" + s.nickname + "' " + s.surname, 0, (i * interval), screen_width * 0.25, interval);
+  }//end if
 }//end soldiers
 
 void crafts()
@@ -464,7 +495,7 @@ void council()
   stroke(0);
   noFill();
   rect(gap_cl * 2.0, gap_cl / 3.0, (screen_width * 0.8) - (gap_cl * 4), gap_cl * 2);
-  image(map, gap_cl * 2.0, gap_cl / 3.0);
+  image(map, (gap_cl * 2.0) + 1, (gap_cl / 3.0) + 1);
  
   fill(#B4F7FF);
   stroke(0);
@@ -505,14 +536,10 @@ void screen_back()
   
   for(int i = 1 ; i < line_count; i ++)
   {
-    stroke(#026F0E);
+    stroke(0);
     line((i * line_across), 0, (i * line_across), screen_length);
     line(0, (i * line_down), screen_width * 0.8, (i * line_down));
   }//end for
-  
-  stroke(0);
-  noFill();
-  rect(0, 0, screen_width * 0.8f, screen_length);
 }//end screen_back
 
 void mouseOver()

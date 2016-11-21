@@ -37,4 +37,9 @@ class Soldier
     this.skill5 = row.getString(14);
     this.bio = row.getString(15);
   }//end constructor
+  
+  void render()
+  {
+    
+  }//end render
 }//end class
