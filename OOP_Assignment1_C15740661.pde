@@ -12,7 +12,7 @@ Gif loading_screen;
 PShape pda, outer, inner, handle;
 PImage backg;
 
-float border, pda_width, pda_length;
+float border, pda_width, pda_length, screen_inlay;
 float handle_length, handle_width, corner;
 float screen_width, screen_length, radius;
 float menu_border, menu_button ,menu_gap ,menu_width ,menu_padding;
@@ -47,7 +47,7 @@ void draw()
   popMatrix();
   
   pushMatrix();
-  translate(border + (corner * 0.9), border + (corner * 0.9));
+  translate(screen_inlay, screen_inlay);
   screen();
   popMatrix();
   
@@ -63,6 +63,7 @@ void initialize()
   corner = pda_length * 0.1f;
   radius = corner * 0.8f;
   
+  screen_inlay = border + (corner * 0.9);
   screen_width = pda_width * 0.73f;
   screen_length = pda_length - (corner * 1.8f);
   
@@ -463,9 +464,7 @@ void council()
   float space_cl = (screen_length - (gap_cl * 4.5)) / 29.0;
   float x ,y;
   
-  
-  fill(#67DFFF);
-  rect(0, 0, screen_width * 0.8, screen_length);
+  screen_back();
   
   fill(255);
   noStroke();
@@ -497,6 +496,26 @@ void council()
     text(c.region, (screen_width * 0.2f) + x, ((space_cl * 2.5) + (gap_cl * 2.5)) + ((i - y) * (space_cl * 4)));
   }//end for
 }//end council
+
+void screen_back()
+{
+  int line_count = 40;
+  float line_across = screen_width * 0.8 / line_count;
+  float line_down = screen_length / line_count;
+  fill(#1A1A1A);
+  rect(0, 0, screen_width * 0.8, screen_length);
+  
+  for(int i = 1 ; i < line_count; i ++)
+  {
+    stroke(#026F0E);
+    line((i * line_across), 0, (i * line_across), screen_length);
+    line(0, (i * line_down), screen_width * 0.8, (i * line_down));
+  }//end for
+  
+  stroke(0);
+  noFill();
+  rect(0, 0, screen_width * 0.8f, screen_length);
+}//end screen_back
 
 void mouseOver()
 {

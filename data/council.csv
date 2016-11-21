@@ -1,14 +1,14 @@
-China,Asia,125,0,Delta,a
-Japan,Asia,130,1,Gamma,a
-Australia,Asia,70,0,Epsilon,a
-Egypt,Africa,100,1,Beta,a
-South Africa,Africa,95,0,Beta,a
-Nigeria,Africa,75,0,Gamma,a
-Germany,Europe,140,1,Alpha,a
-France,Europe,120,1,Beta,a
-Russia,Europe,80,0,Epsilon,a
-Canada,North America,110,0,Delta,a
-Mexico,North America,100,1,Beta,a
-United States,North America,170,1,Alpha,a
-Argentina,South America,65,0,Alpha,a
-Brazil,South America,95,1,Beta,a
+China,Asia,65,No,Severe,One of ADVENT's HQ : Will advise to avoid until the Resistance is stronger
+Japan,Asia,120,Yes,Medium,Significant ADVENT activity : All missions in this region will face strong ADVENT patrols
+Australia,Asia,110,Yes,Marginal,ADVENT have no foothold here : Resistance territory
+Egypt,Africa,55,No,High,Heavily fortified ADVENT territory : Any OPs here will face tough opposition
+South Africa,Africa,105,Yes,Low,Light ADVENT activity : While Squads will face opposition they should easily deal with it
+Nigeria,Africa,75,Yes,Medium,Significant ADVENT activity : All missions in this region will face strong ADVENT patrols
+Germany,Europe,45,No,Severe,One of ADVENT's HQ : Will advise to avoid until the Resistance is stronger
+France,Europe,60,No,High,Heavily fortified ADVENT territory : Any OPs here will face tough opposition
+Russia,Europe,130,Yes,Low,Light ADVENT activity : While Squads will face opposition they should easily deal with it
+Canada,North America,125,Yes,Low,Light ADVENT activity : While Squads will face opposition they should easily deal with it
+Mexico,North America,100,Yes,Medium,Significant ADVENT activity : All missions in this region will face strong ADVENT patrols
+United States,North America,50,No,High,Heavily fortified ADVENT territory : Any OPs here will face tough opposition
+Argentina,South America,95,Yes,Marginal,ADVENT have no foothold here : Resistance territory
+Brazil,South America,80,Yes,Low,Light ADVENT activity : While Squads will face opposition they should easily deal with it
