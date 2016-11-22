@@ -3,7 +3,7 @@ class Mission
   String name;
   String type;
   String rewards;
-  int difficulty;
+  String difficulty;
   String location;
   int alien1_amount;
   String alien1_name;
@@ -20,7 +20,7 @@ class Mission
     this.name = row.getString(0);
     this.type = row.getString(1);
     this.rewards = row.getString(2);
-    this.difficulty = row.getInt(3);
+    this.difficulty = row.getString(3);
     this.location = row.getString(4);
     this.alien1_amount = row.getInt(5);
     this.alien1_name = row.getString(6);
@@ -33,8 +33,27 @@ class Mission
     this.description = row.getString(13);
   }//end constructor
 
-  void render()
+  void render(PImage temp)
   {
+    stroke(0);
+    fill(#B4F7FF);
+    rect(mission_width * 0.5, mission_length * 3, mission_width * 1.5, mission_length * 4);
     
+    
+    fill(0);
+    textSize(15);
+    textAlign(LEFT, TOP);
+    text("Name: " + name + "\nType: " + type + "\nRewards: " + rewards + "\nDifficulty: " 
+    + difficulty + "\nLocation: " + location
+    , mission_width * 1.29, mission_length * 3.1);
+    textSize(13);
+    text("Enemies Present: " + alien1_amount + " " + alien1_name + "'s, " + alien2_amount + " " + alien2_name + "'s, "
+    + alien3_amount + " " + alien3_name + "'s, " + alien4_amount + " " + alien4_name + "'s"
+    + "\n" + description
+    , mission_width * 0.54, mission_length * 5.4, mission_width * 1.46, mission_length * 2.6);
+    
+    noFill();
+    rect(gap_m * 1.5, gap_m, mission_width * 1.2, mission_length * 5);
+    image(temp, (gap_m * 1.5) + 1, gap_m + 1);
   }//end render
 }//end mission

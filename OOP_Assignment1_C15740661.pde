@@ -133,7 +133,7 @@ void loadImages()
   for(int i = 0; i < areas.length; i++)
   {
     areas[i] = loadImage("area" + i + ".jpg");
-    //areas[i].resize((int)(craft_width - 1), (int)(craft_length - 1));
+    areas[i].resize((int)((mission_width * 1.2) -1), (int)(mission_length * 5) - 1);
   }//end for
 }//end loadImages
 
@@ -384,6 +384,14 @@ void mousePressed()
       if( mouseY > screen_inlay + menu_border + (i * (menu_gap + menu_button)) && mouseY < screen_inlay + menu_border + menu_button + (i * (menu_gap + menu_button)))
       {
         menu_choice = i + 1;
+        if(menu_choice != 1)
+        {
+          mission_choice = 100;
+        }//end if
+        if(menu_choice != 2)
+        {
+          soldier_choice = 100;
+        }//end if
       }//end if
     }//end for
   }//end if
@@ -409,11 +417,6 @@ void mousePressed()
         if( mouseY > screen_inlay + gap_m + y && mouseY < screen_inlay + gap_m + y + mission_length)
         {
           mission_choice = i;
-          Mission m = missions.get(i);
-          pushMatrix();
-          translate(screen_inlay, screen_inlay + gap_m + mission_length);
-          m.render();
-          popMatrix();
         }//end if
       }//end if
     }//end for
@@ -535,6 +538,14 @@ void missions()
     textAlign(CENTER, CENTER);
     fill(0);
     text(m.name, gap_m + x, gap_m + y, mission_width, mission_length);
+    
+    if(mission_choice == i)
+    {
+      pushMatrix();
+      translate(0, gap_m + mission_length);
+      m.render(areas[i]);
+      popMatrix();
+    }//end if
   }//end for
 }//end briefing
 
