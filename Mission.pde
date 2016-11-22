@@ -33,4 +33,8 @@ class Mission
     this.description = row.getString(13);
   }//end constructor
 
+  void render()
+  {
+    
+  }//end render
 }//end mission

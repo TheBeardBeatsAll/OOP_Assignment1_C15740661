@@ -12,15 +12,18 @@ Gif loading_screen;
 PShape pda, outer, inner, handle;
 PImage backg, map;
 
+float x, y;
+
 float border, pda_width, pda_length, screen_inlay;
 float handle_length, handle_width, corner;
 float screen_width, screen_length, radius;
 float menu_border, menu_button ,menu_gap ,menu_width ,menu_padding;
 float gap_cl, space_cl;
 float gap_cr, craft_length, craft_width;
+float gap_m, mission_length, mission_width;
 float interval;
 
-int menu_choice, soldier_choice;
+int menu_choice, soldier_choice, mission_choice;
   
 boolean on = false;
 boolean load = false;
@@ -28,6 +31,9 @@ boolean load = false;
 Table t;
 
 PImage[] craft = new PImage[3];  
+PImage[] areas = new PImage[4];
+
+String[] menu = new String[5];
 
 ArrayList<Mission> missions = new ArrayList<Mission>();
 ArrayList<Tech> armour = new ArrayList<Tech>();
@@ -81,6 +87,12 @@ void initialize()
   menu_width = screen_width * 0.18f;
   menu_padding = screen_width * 0.01f;
   
+  menu[0] = "Missions";
+  menu[1] = "Soldiers";
+  menu[2] = "Craft";
+  menu[3] = "Tech";
+  menu[4] = "Council";
+  
   gap_cl = screen_width * 0.04;
   space_cl = (screen_length - (gap_cl * 3.8)) / 43.0;
   
@@ -88,8 +100,14 @@ void initialize()
   craft_length = (screen_length - (gap_cr * 4)) / 3.0;
   craft_width = ((screen_width * 0.8) - (gap_cr * 3)) / 2.0;
   
+  gap_m = screen_length * 0.03f;
+  mission_length = screen_length * 0.1;
+  mission_width = ((screen_width * 0.8) - (gap_m * 3)) / 2.0;
+  
   soldier_choice = 100;
 
+  mission_choice = 100;
+  
   loadImages();
   loadData();
   
@@ -110,6 +128,12 @@ void loadImages()
   {
     craft[i] = loadImage("ship" + i + ".jpg");
     craft[i].resize((int)(craft_width - 1), (int)(craft_length - 1));
+  }//end for
+  
+  for(int i = 0; i < areas.length; i++)
+  {
+    areas[i] = loadImage("area" + i + ".jpg");
+    //areas[i].resize((int)(craft_width - 1), (int)(craft_length - 1));
   }//end for
 }//end loadImages
 
@@ -336,9 +360,9 @@ void keyPressed()
 
 void mousePressed()
 {
-  float on_x = width - ( border + (handle_width / 2) );
-  float on_y = border + handle_length - (radius * 0.9f);
-  float d = sqrt(pow(mouseX-on_x,2) + pow(mouseY-on_y,2));
+  float x_on = width - ( border + (handle_width / 2) );
+  float y_on = border + handle_length - (radius * 0.9f);
+  float d = sqrt(pow(mouseX-x_on,2) + pow(mouseY-y_on,2));
   if (d <= ( radius / 2 ))
   {
     if(on)
@@ -356,17 +380,51 @@ void mousePressed()
   if( mouseX > screen_inlay + menu_padding  + (screen_width * 0.8) && mouseX < screen_inlay + menu_padding + (screen_width * 0.8) + menu_width)
   {
     for(int i = 0; i < 5; i++)
+    {
       if( mouseY > screen_inlay + menu_border + (i * (menu_gap + menu_button)) && mouseY < screen_inlay + menu_border + menu_button + (i * (menu_gap + menu_button)))
       {
         menu_choice = i + 1;
       }//end if
+    }//end for
   }//end if
+  
+  if(menu_choice == 1)
+  {
+    for(int i = 0; i < missions.size(); i++)
+    { 
+      x = y = 0;
+    
+      if(i >= missions.size() / 2)
+      {
+        y = screen_length - (mission_length + (gap_m * 2));
+      }//end if
+      
+      if(i % 2 == 1)
+      {
+        x = mission_width + gap_m;
+      }//end else
+      
+      if( mouseX > screen_inlay + gap_m + x && mouseX < screen_inlay + gap_m + x + mission_width)
+      {
+        if( mouseY > screen_inlay + gap_m + y && mouseY < screen_inlay + gap_m + y + mission_length)
+        {
+          mission_choice = i;
+          Mission m = missions.get(i);
+          pushMatrix();
+          translate(screen_inlay, screen_inlay + gap_m + mission_length);
+          m.render();
+          popMatrix();
+        }//end if
+      }//end if
+    }//end for
+  }//end if 
   
   if(menu_choice == 2)
   {
     if( mouseX > screen_inlay && mouseX < screen_inlay + (screen_width * 0.25))
     {
       for(int i = 0; i < soldiers.size(); i++)
+      {
         if( mouseY > screen_inlay + (i * interval) && mouseY < screen_inlay + interval + (i * interval))
         {
           soldier_choice = i;
@@ -376,9 +434,10 @@ void mousePressed()
           s.render();
           popMatrix();
         }//end if
+      }//end for
     }//end if
   }//end if
-}//end on_off
+}//end mousePressed
 
 void loading()
 {
@@ -430,31 +489,8 @@ void menu()
     }//end else
     rect(menu_padding, menu_border + ((i * menu_gap) + (i * menu_button)), menu_width, menu_button);
 
-    if(i == 0)
-    {
-      fill(0);
-      text("Missions", (screen_width * 0.2f) / 2, menu_border + ( menu_button / 2 ) +((i * menu_gap) + (i * menu_button)));
-    }//end if
-    else if(i == 1)
-    {
-      fill(0);
-      text("Soldiers", (screen_width * 0.2f) / 2, menu_border + ( menu_button / 2 ) +((i * menu_gap) + (i * menu_button)));
-    }//end else if
-    else if(i == 2)
-    {
-      fill(0);
-      text("Crafts", (screen_width * 0.2f) / 2, menu_border + ( menu_button / 2 ) +((i * menu_gap) + (i * menu_button)));
-    }//end else if
-    else if(i == 3)
-    {
-      fill(0);
-      text("Tech", (screen_width * 0.2f) / 2, menu_border + ( menu_button / 2 ) +((i * menu_gap) + (i * menu_button)));
-    }//end else if
-    else if(i == 4)
-    {
-      fill(0);
-      text("Council", (screen_width * 0.2f) / 2, menu_border + ( menu_button / 2 ) +((i * menu_gap) + (i * menu_button)));
-    }//end else if
+    fill(0);
+    text(menu[i], (screen_width * 0.2f) / 2, menu_border + ( menu_button / 2 ) +((i * menu_gap) + (i * menu_button)));
   }//end for
 }//end menu
 
@@ -467,7 +503,39 @@ void welcome()
 void missions()
 {
   screen_back();
-  
+
+  for(int i = 0; i < missions.size(); i++)
+  {
+    Mission m = missions.get(i);
+    
+    x = y = 0;
+    
+    if(i >= missions.size() / 2)
+    {
+      y = screen_length - (mission_length + (gap_m * 2));
+    }//end if
+    
+    if(i % 2 == 1)
+    {
+      x = mission_width + gap_m;
+    }//end else
+    
+    if(mission_choice == i)
+    {
+      fill(#020ACB);
+    }//end if
+    else
+    {
+      fill(#79ADFF);
+    }//end else
+    stroke(0);
+    rect(gap_m + x, gap_m + y, mission_width, mission_length);
+    
+    textSize(24);
+    textAlign(CENTER, CENTER);
+    fill(0);
+    text(m.name, gap_m + x, gap_m + y, mission_width, mission_length);
+  }//end for
 }//end briefing
 
 void soldiers()
@@ -517,9 +585,7 @@ void tech()
 void council()
 {
   screen_back();
-  
-  float x ,y;
-  
+
   stroke(0);
   noFill();
   rect(gap_cl * 2.0, gap_cl / 3.0, (screen_width * 0.8) - (gap_cl * 4), gap_cl * 2);
@@ -542,8 +608,7 @@ void council()
     Country c = countries.get(i);
     if(i < countries.size() / 2)
     {
-      x = 0;
-      y = 0;
+      x = y = 0;
     }//end if
     else
     {
@@ -572,8 +637,6 @@ void screen_back()
 
 void mouseOver()
 {
-  float x, y;
-  
   if(menu_choice == 4)
   {
     //for(int i = 0; i < countries.size(); i++)
