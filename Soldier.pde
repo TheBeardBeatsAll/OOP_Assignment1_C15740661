@@ -1,8 +1,6 @@
 class Soldier
 {
-  String name;
-  String surname;
-  String rank;
+  String name, surname, rank;
   String nickname;
   String health;
   int kills;
@@ -16,7 +14,6 @@ class Soldier
   String skill4;
   String skill5;
   String bio;
-  color c;
   
   Soldier(TableRow row)
   {

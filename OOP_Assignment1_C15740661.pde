@@ -17,6 +17,7 @@ float handle_length, handle_width, corner;
 float screen_width, screen_length, radius;
 float menu_border, menu_button ,menu_gap ,menu_width ,menu_padding;
 float gap_cl, space_cl;
+float gap_cr, craft_length, craft_width;
 float interval;
 
 int menu_choice, soldier_choice;
@@ -25,6 +26,8 @@ boolean on = false;
 boolean load = false;
 
 Table t;
+
+PImage[] craft = new PImage[3];  
 
 ArrayList<Mission> missions = new ArrayList<Mission>();
 ArrayList<Tech> armour = new ArrayList<Tech>();
@@ -81,8 +84,12 @@ void initialize()
   gap_cl = screen_width * 0.04;
   space_cl = (screen_length - (gap_cl * 3.8)) / 43.0;
   
-  soldier_choice = 100;
+  gap_cr = screen_length * 0.05f;
+  craft_length = (screen_length - (gap_cr * 4)) / 3.0;
+  craft_width = ((screen_width * 0.8) - (gap_cr * 3)) / 2.0;
   
+  soldier_choice = 100;
+
   loadImages();
   loadData();
   
@@ -92,10 +99,18 @@ void initialize()
 void loadImages()
 {
   loading_screen = new Gif(this, "XCOM_Shield_Logo.gif");
+  
   backg = loadImage("background.jpg");
   backg.resize(width,height);
+  
   map = loadImage("map.jpg");
   map.resize((int)((screen_width * 0.8) - (gap_cl * 4))-1, (int)(gap_cl * 2)-1);
+  
+  for(int i = 0; i < craft.length; i++)
+  {
+    craft[i] = loadImage("ship" + i + ".jpg");
+    craft[i].resize((int)(craft_width - 1), (int)(craft_length - 1));
+  }//end for
 }//end loadImages
 
 void loadData()
@@ -308,6 +323,17 @@ void screen()
   }//end else
 }//end screen
 
+void keyPressed()
+{
+  if(keyPressed)
+  {
+    if(key == ' ')
+    {
+      menu_choice = 0;
+    }//end if
+  }//end if
+}//end keyPressed
+
 void mousePressed()
 {
   float on_x = width - ( border + (handle_width / 2) );
@@ -332,14 +358,7 @@ void mousePressed()
     for(int i = 0; i < 5; i++)
       if( mouseY > screen_inlay + menu_border + (i * (menu_gap + menu_button)) && mouseY < screen_inlay + menu_border + menu_button + (i * (menu_gap + menu_button)))
       {
-        if(menu_choice == i + 1)
-        {
-          menu_choice = 0;
-        }//end if
-        else
-        {
-          menu_choice = i + 1;
-        }//end else
+        menu_choice = i + 1;
       }//end if
   }//end if
   
@@ -481,6 +500,12 @@ void crafts()
 {
   screen_back();
   
+  for(int i = 0; i < aircraft.size(); i++)
+  {
+    float y = i * (craft_length + gap_cr);
+    Craft c = aircraft.get(i);
+    c.render(y, craft[i]);
+  }//end for
 }//end craft
 
 void tech()
