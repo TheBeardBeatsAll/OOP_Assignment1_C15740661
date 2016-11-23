@@ -16,7 +16,19 @@ class Tech
   
   void render(float x, float y)
   {
+    stroke(0);
+    fill(#B4F7FF);
+    rect(x, y, tech_width * 1.27, tech_length * 0.8);
     fill(0);
-    rect(x,y, 20, 20);
+    textSize(14);
+    textAlign(CENTER, CENTER);
+    text(name, 
+    x + (tech_width * 0.635), y + (tech_length * 0.08));
+    textSize(10);
+    text("Type: " + type + "  Stock: " + amount, 
+    x + (tech_width * 0.635), y + (tech_length * 0.24));
+    textAlign(LEFT, TOP);
+    text("Description: " + description, 
+    x + (tech_width * 0.03), y + (tech_length * 0.34), tech_width * 1.25, tech_length);
   }//end render
 }//end Tech

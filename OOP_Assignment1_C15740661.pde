@@ -263,13 +263,13 @@ void drawHandle()
   {
     if( i % 7 == 0 )
     {
-      fill(#481703);
+      fill(#111521);
       rect(0, j*space*7, handle_width, space);
       j++;
     }//end else
     else if( (i - 1) % 7 == 0)
     {
-      fill(#A5360A);
+      fill(#595C64);
       rect(0, k*space, handle_width, space * 6);
       k = k + 7;
     }//end else
@@ -591,6 +591,13 @@ void tech()
       x = i * (tech_width + gap_t);
       y = j * (tech_length + gap_t);
       
+      stroke(0);
+      fill(#B4F7FF);
+      rect((gap_t * 2) + x + tech_width, (gap_t * 2) + y, (gap_t * 0.6), gap_t);
+      fill(#FCF503);
+      ellipse((gap_t * 2.3) + x + tech_width, (gap_t * 2.3) + y, (gap_t * 0.3), (gap_t * 0.3));
+      rect((gap_t * 2.15) + x + tech_width, (gap_t * 2.55) + y, (gap_t * 0.3), (gap_t * 0.35));
+      
       image(item[item_choice], (gap_t * 2) + x, (gap_t * 2) + y);
       item_choice++;
     }//end if
@@ -663,9 +670,9 @@ void mouseOver()
         y = j * (tech_length + gap_t);
         
         Tech t = items.get(item_choice);
-        if(mouseX > screen_inlay + (gap_t * 2) + x && mouseX < screen_inlay + (gap_t * 2) + x + tech_width)
+        if(mouseX > screen_inlay + (gap_t * 2) + tech_width + x && mouseX < screen_inlay + (gap_t * 2.6) + x + tech_width)
         {
-          if(mouseY > screen_inlay + (gap_t * 2) + y && mouseY < screen_inlay + (gap_t * 2) + y + tech_length)
+          if(mouseY > screen_inlay + (gap_t * 2) + y && mouseY < screen_inlay + (gap_t * 3) + y)
           {
             t.render(mouseX,mouseY);
           }//end if
