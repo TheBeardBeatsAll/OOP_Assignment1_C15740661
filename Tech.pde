@@ -17,12 +17,17 @@ class Tech
   {
     stroke(0);
     fill(#B4F7FF);
-    rect(x,y, tech_width * 1.1, tech_length);
+    rect(x, y, tech_width * 1.1, tech_length * 1.35);
     fill(0);
+    textSize(14);
+    textAlign(CENTER, CENTER);
+    text(name, 
+    x + (tech_width * 0.55), y + (tech_length * 0.1));
     textSize(10);
+    text("Type: " + type + "  Stock: " + amount, 
+    x + (tech_width * 0.55), y + (tech_length * 0.29));
     textAlign(LEFT, TOP);
-    text(" Name: " + name + "  Type: " + type + "  Stock: " + amount 
-    + "\n Description: " + description
-    , x,y, tech_width * 1.1, tech_length);
+    text("Description: " + description, 
+    x + (tech_width * 0.03), y + (tech_length * 0.4), tech_width * 1.05, tech_length);
   }//end render
 }//end Tech
