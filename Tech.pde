@@ -4,7 +4,6 @@ class Tech
   String name;
   int amount;
   String description;
-  String type_n;
   
   Tech(TableRow row)
   {
@@ -16,7 +15,14 @@ class Tech
   
   void render(float x, float y)
   {
+    stroke(0);
+    fill(#B4F7FF);
+    rect(x,y, tech_width * 1.1, tech_length);
     fill(0);
-    rect(x,y, 20, 20);
+    textSize(10);
+    textAlign(LEFT, TOP);
+    text(" Name: " + name + "  Type: " + type + "  Stock: " + amount 
+    + "\n Description: " + description
+    , x,y, tech_width * 1.1, tech_length);
   }//end render
 }//end Tech
