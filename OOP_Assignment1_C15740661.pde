@@ -26,10 +26,13 @@ float interval, tech_width, tech_length, gap_t;
 int menu_choice, soldier_choice, mission_choice, mission_selected;
 int item_choice;
 
-boolean on, load, check_m;
-boolean select_m0, select_m1, select_m2, select_m3;
+String select;
+
+boolean on, load;
 
 Table t;
+
+Boolean[] select_m = new Boolean[4];
 
 PImage[] craft = new PImage[3];  
 PImage[] areas = new PImage[4];
@@ -69,9 +72,11 @@ void draw()
 
 void initialize()
 {
+  for(int i = 0; i < 4; i++)
+  {
+    select_m[i] = false;
+  }//end if
   on = load = false;
-  select_m0 = select_m1 = select_m2 = select_m3 = false;
-  check_m = true;
 
   border = width*0.02f;
   pda_width = width - (border*2);
@@ -378,58 +383,38 @@ void keyPressed()
     }//end if
     if(key == ENTER)
     {
-      switch(mission_choice)
+      if(menu_choice == 1)
       {
-        case 0:
-            if(select_m0)
+        for(int i = 0; i < missions.size(); i++)
+        {
+          if(mission_choice == i)
+          {
+            if(select_m[i])
             {
-              select_m0 = false;
+              select_m[i] = false;
               selected = null;
             }//end if
-            else 
+            else
             {
-               select_m0 = true;
-               selected = missions.get(0);
+              for(int j = 0; j < missions.size(); j++)
+              {
+                if(i == j)
+                {
+                  select_m[j] = true;
+                }//end if
+                else
+                {
+                  select_m[j] = false;
+                }//end else
+              }//end for
+              select_m[i] = true;
+              selected = missions.get(i);
             }//end else
-          break;
-        case 1:
-            if(select_m1)
-            {
-              select_m1 = false;
-              selected = null;
-            }//end if
-            else 
-            {
-               select_m1 = true;
-               selected = missions.get(1);
-            }//end else
-          break;
-        case 2:
-            if(select_m2)
-            {
-              select_m2 = false;
-              selected = null;
-            }//end if
-            else 
-            {
-               select_m2 = true;
-               selected = missions.get(2);
-            }//end else
-          break;
-        case 3:
-            if(select_m3)
-            {
-              select_m3 = false;
-              selected = null;
-            }//end if
-            else 
-            {
-               select_m3 = true;
-               selected = missions.get(3);
-            }//end else
-          break;
-      }//end switch
+          }//end if
+        }//end for
+      }//end if
     }//end if
+    
     if(menu_choice > 0 && menu_choice < 6)
     {
       if(key == 'w')
@@ -437,6 +422,7 @@ void keyPressed()
         menu_choice--;
       }//end if
     }//end if
+    
     if(menu_choice < 5 && menu_choice > -1)
     {
       if(key == 's')
@@ -504,6 +490,40 @@ void mousePressed()
         }//end if
       }//end if
     }//end for
+    
+  if( mouseX > screen_inlay + mission_width * 1.4 && mouseX < screen_inlay + mission_width * 1.9)
+    {
+      if( mouseY > screen_inlay + mission_length * 2.25 && mouseY < screen_inlay + mission_length * 3.25)
+      {
+        for(int i = 0; i < missions.size(); i++)
+        {
+          if(mission_choice == i)
+          {
+            if(select_m[i])
+            {
+              select_m[i] = false;
+              selected = null;
+            }//end if
+            else
+            {
+              for(int j = 0; j < missions.size(); j++)
+              {
+                if(i == j)
+                {
+                  select_m[j] = true;
+                }//end if
+                else
+                {
+                  select_m[j] = false;
+                }//end else
+              }//end for
+              select_m[i] = true;
+              selected = missions.get(i);
+            }//end else
+          }//end if
+        }//end for
+      }//end if
+    }//end if
   }//end if 
   
   if(menu_choice == 2)
@@ -604,6 +624,25 @@ void missions()
     
     if(mission_choice == i)
     {
+      if(select_m[i])
+      {
+        fill(#FF1F23);
+        select = "Selected";
+        
+      }//end if
+      else
+      {
+        fill(#79ADFF);
+        select = "Select";
+      }//end else
+      stroke(0);
+      rect(mission_width * 1.4, mission_length * 2.25, mission_width * 0.5, mission_length);
+      
+      fill(0);
+      textSize(24);
+      textAlign(CENTER, CENTER);
+      text(select, mission_width * 1.65, mission_length * 2.75);
+      
       pushMatrix();
       translate(0, gap_m + mission_length);
       m.render(areas[i]);
@@ -622,65 +661,6 @@ void missions()
     fill(0);
     text(m.name, gap_m + x, gap_m + y, mission_width, mission_length);
   }//end for
-  
-  switch(mission_choice)
-  {
-    case 0:
-      if(select_m0)
-      {
-        fill(50);
-        //text();
-      }//end if
-      else
-      {
-        fill(255);
-        //text();
-      }//end else
-      stroke(0);
-      rect(mission_width * 1.4, mission_length * 2.25, mission_width * 0.5, mission_length);
-      break;
-    case 1:
-      if(select_m1)
-      {
-        fill(50);
-        //text();
-      }//end if
-      else
-      {
-        fill(255);
-        //text();
-      }//end else
-      stroke(0);
-      rect(mission_width * 1.4, mission_length * 2.25, mission_width * 0.5, mission_length);
-      break;
-    case 2:
-      if(select_m2)
-      {
-        fill(50);
-        //text();
-      }//end if
-      else
-      {
-        fill(255);
-        //text();
-      }//end else
-      stroke(0);
-      rect(mission_width * 1.4, mission_length * 2.25, mission_width * 0.5, mission_length);
-      break;
-    case 3:
-      if(select_m3)
-      {
-        fill(50);
-        //text();
-      }//end if
-      else
-      {
-        fill(255);
-        //text();
-      }//end else
-      stroke(0);
-      rect(mission_width * 1.4, mission_length * 2.25, mission_width * 0.5, mission_length);
-  }//end switch
 }//end briefing
 
 void soldiers()
