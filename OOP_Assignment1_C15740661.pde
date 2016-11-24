@@ -25,13 +25,15 @@ float interval, tech_width, tech_length, gap_t;
 float soldier_width, soldier_length, gap_s;
 
 int menu_choice, soldier_choice, mission_choice, mission_selected;
-int item_choice;
+int item_choice, count;
 
 String s_select, m_select;
 
 boolean on, load;
 
 Table t;
+
+int[] checks = new int[5];
 
 Boolean[] select_m = new Boolean[4];
 Boolean[] select_s = new Boolean[14];
@@ -85,6 +87,12 @@ void initialize()
   }//end if
   on = load = false;
 
+  for(int i = 0; i < 5; i++)
+  {
+    checks[i] = -1;
+  }//end if
+  count = 0;
+  
   border = width*0.02f;
   pda_width = width - (border*2);
   pda_length = height - (border*2);
@@ -178,6 +186,7 @@ void loadData()
   items.clear();
   soldiers.clear();
   aircraft.clear();
+  on_mission.clear();
   
   t = loadTable("mission.csv", "csv");
   for(TableRow row : t.rows())
@@ -429,23 +438,14 @@ void keyPressed()
           {
             if(select_s[i])
             {
-              select_s[i] = false;
-              selects = null;
+              remove(i);
             }//end if
             else
             {
-              for(int j = 0; j < soldiers.size(); j++)
+              if(count < checks.length)
               {
-                if(i == j)
-                {
-                  select_s[j] = true;
-                }//end if
-                else
-                {
-                  select_s[j] = false;
-                }//end else
-              }//end for
-              selects = soldiers.get(i);
+                add(i);
+              }//end if
             }//end else
           }//end if
         }//end for
@@ -506,6 +506,56 @@ void keyPressed()
     }//end if
   }//end if
 }//end keyPressed
+
+void add(int x)
+{
+  checks[count] = x;
+  selects = soldiers.get(x);
+  on_mission.add(selects);
+  count++;
+  
+  for(int j = 0; j < select_s.length; j++)
+  {
+    for( int i = 0; i < count; i++)
+    {
+      if(j == checks[i])
+      {
+        select_s[j] = true;
+        break;
+      }//end if
+      else
+      {
+        select_s[j] = false;
+      }//end else
+    }//end for
+  }//end for
+}//end add
+
+void remove(int x)
+{
+  int temp;
+  select_s[x] = false;
+  
+  for(int i = 0; i < checks.length; i++)
+  {
+    if(checks[i] == x)
+    {
+      on_mission.remove(i);
+      checks[i] = -1;
+      count--;
+      for(int j = i; j < checks.length - 1; j++)
+      {
+        if(checks[j + 1] == -1)
+        {
+          return;
+        }//end if
+        temp = checks[j];
+        checks[j] = checks[j + 1];
+        checks[j + 1] = temp;
+      }//end for
+    }//end if
+  }//end for
+}//end remove
 
 void mousePressed()
 {
@@ -677,12 +727,23 @@ void welcome()
   fill(255);
   rect(0,0, mission_width, mission_length);
   
+  if(on_mission != null)
+  {
+    for(int i = 0; i < on_mission.size(); i++)
+    {
+       Soldier s = on_mission.get(i);
+       fill(0);
+       textSize(24);
+       textAlign(CENTER, CENTER);
+       text(s.name, mission_width * 0.8, mission_length * 0.5 + (i * (mission_length * 0.5)));
+    }//end for
+  }//end if
   if(selected != null)
   {
    fill(0);
    textSize(24);
    textAlign(CENTER, CENTER);
-   text(selected.name, mission_width * 0.5, mission_length *0.5);
+   text(selected.name, mission_width * 0.5, mission_length * 0.5);
   }//end if
 }//end welcome
 
