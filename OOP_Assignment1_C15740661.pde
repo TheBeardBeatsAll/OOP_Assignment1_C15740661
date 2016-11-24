@@ -23,11 +23,11 @@ float gap_cr, craft_length, craft_width;
 float gap_m, mission_length, mission_width;
 float interval, tech_width, tech_length, gap_t;
 
-int menu_choice, soldier_choice, mission_choice;
+int menu_choice, soldier_choice, mission_choice, mission_selected;
 int item_choice;
 
-boolean on = false;
-boolean load = false;
+boolean on, load, check_m;
+boolean select_m0, select_m1, select_m2, select_m3;
 
 Table t;
 
@@ -37,6 +37,8 @@ PImage[] item = new PImage[12];
 
 String[] menu = new String[5];
 String[] t_menu = new String[3];
+
+Mission selected = null;
 
 ArrayList<Mission> missions = new ArrayList<Mission>();
 ArrayList<Tech> items = new ArrayList<Tech>();
@@ -67,6 +69,10 @@ void draw()
 
 void initialize()
 {
+  on = load = false;
+  select_m0 = select_m1 = select_m2 = select_m3 = false;
+  check_m = true;
+
   border = width*0.02f;
   pda_width = width - (border*2);
   pda_length = height - (border*2);
@@ -111,6 +117,7 @@ void initialize()
   
   soldier_choice = 100;
   mission_choice = 100;
+  mission_selected = 100;
   
   tech_width = (screen_width * 0.8) / 4;
   gap_t = (screen_width * 0.8) / 24;
@@ -263,13 +270,13 @@ void drawHandle()
   {
     if( i % 7 == 0 )
     {
-      fill(#481703);
+      fill(#26263B);
       rect(0, j*space*7, handle_width, space);
       j++;
     }//end else
     else if( (i - 1) % 7 == 0)
     {
-      fill(#A5360A);
+      fill(#595962);
       rect(0, k*space, handle_width, space * 6);
       k = k + 7;
     }//end else
@@ -355,7 +362,87 @@ void keyPressed()
   {
     if(key == ' ')
     {
-      menu_choice = 0;
+      if(on)
+      {
+        on = false;
+      }//end if
+      else
+      {
+        load = true;
+        on = true;
+        menu_choice = 100;
+        mission_choice = 100;
+        soldier_choice = 100;
+        mission_selected = 100;
+      }//end else
+    }//end if
+    if(key == ENTER)
+    {
+      switch(mission_choice)
+      {
+        case 0:
+            if(select_m0)
+            {
+              select_m0 = false;
+              selected = null;
+            }//end if
+            else 
+            {
+               select_m0 = true;
+               selected = missions.get(0);
+            }//end else
+          break;
+        case 1:
+            if(select_m1)
+            {
+              select_m1 = false;
+              selected = null;
+            }//end if
+            else 
+            {
+               select_m1 = true;
+               selected = missions.get(1);
+            }//end else
+          break;
+        case 2:
+            if(select_m2)
+            {
+              select_m2 = false;
+              selected = null;
+            }//end if
+            else 
+            {
+               select_m2 = true;
+               selected = missions.get(2);
+            }//end else
+          break;
+        case 3:
+            if(select_m3)
+            {
+              select_m3 = false;
+              selected = null;
+            }//end if
+            else 
+            {
+               select_m3 = true;
+               selected = missions.get(3);
+            }//end else
+          break;
+      }//end switch
+    }//end if
+    if(menu_choice > 0 && menu_choice < 6)
+    {
+      if(key == 'w')
+      {
+        menu_choice--;
+      }//end if
+    }//end if
+    if(menu_choice < 5 && menu_choice > -1)
+    {
+      if(key == 's')
+      {
+        menu_choice++;
+      }//end if
     }//end if
   }//end if
 }//end keyPressed
@@ -378,6 +465,7 @@ void mousePressed()
       menu_choice = 100;
       mission_choice = 100;
       soldier_choice = 100;
+      mission_selected = 100;
     }//end else
   }//end if
   
@@ -534,6 +622,65 @@ void missions()
     fill(0);
     text(m.name, gap_m + x, gap_m + y, mission_width, mission_length);
   }//end for
+  
+  switch(mission_choice)
+  {
+    case 0:
+      if(select_m0)
+      {
+        fill(50);
+        //text();
+      }//end if
+      else
+      {
+        fill(255);
+        //text();
+      }//end else
+      stroke(0);
+      rect(mission_width * 1.4, mission_length * 2.25, mission_width * 0.5, mission_length);
+      break;
+    case 1:
+      if(select_m1)
+      {
+        fill(50);
+        //text();
+      }//end if
+      else
+      {
+        fill(255);
+        //text();
+      }//end else
+      stroke(0);
+      rect(mission_width * 1.4, mission_length * 2.25, mission_width * 0.5, mission_length);
+      break;
+    case 2:
+      if(select_m2)
+      {
+        fill(50);
+        //text();
+      }//end if
+      else
+      {
+        fill(255);
+        //text();
+      }//end else
+      stroke(0);
+      rect(mission_width * 1.4, mission_length * 2.25, mission_width * 0.5, mission_length);
+      break;
+    case 3:
+      if(select_m3)
+      {
+        fill(50);
+        //text();
+      }//end if
+      else
+      {
+        fill(255);
+        //text();
+      }//end else
+      stroke(0);
+      rect(mission_width * 1.4, mission_length * 2.25, mission_width * 0.5, mission_length);
+  }//end switch
 }//end briefing
 
 void soldiers()
