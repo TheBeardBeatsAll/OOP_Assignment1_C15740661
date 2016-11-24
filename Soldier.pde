@@ -37,8 +37,9 @@ class Soldier
   
   void render()
   {
-    float chart_width, chart_length;
     float inlay = soldier_width * 0.02;
+    float chart_width; 
+    float chart_length = inlay * 1.5;
     
     stroke(0);
     fill(#B4F7FF);
@@ -48,18 +49,41 @@ class Soldier
     fill(0);
     textSize(12);
     textAlign(LEFT, TOP);
+    text("Name: " + name + " '" + nickname + "' " + surname 
+    + "\nRank: " + rank + "\nHealth: " + health + "\nKills:" + kills
+    + "\nMobility:\n\nAim:\n\nTech:\n\nWill:\n\nSkills:\n" + skill1
+    + ", " + skill2 + ",\n" + skill3 + ", " +
+    skill4 + ", " + skill5
+    , gap_s + inlay, gap_s + inlay);
     text("Bio:\n" + bio, gap_s + inlay, (gap_s * 2) + (soldier_length * 2.2) + inlay, 
      soldier_width - (inlay * 2), soldier_length - inlay);
     
-    chart_width = chart(mobility);
-    chart_width = chart(aim);
-    chart_width = chart(tech);
-    chart_width = chart(will);
+    chart_width = chart(mobility, inlay);
+    fill(#E5FA05);
+    rect(gap_s + inlay, gap_s + (inlay * 11), chart_width, chart_length);
+    chart_width = chart(aim, inlay);
+    fill(#1405FA);
+    rect(gap_s + inlay, gap_s + (inlay * 15), chart_width, chart_length);
+    chart_width = chart(tech, inlay);
+    fill(#05FA1F);
+    rect(gap_s + inlay, gap_s + (inlay * 19), chart_width, chart_length);
+    chart_width = chart(will, inlay);
+    fill(#FA0505);
+    rect(gap_s + inlay, gap_s + (inlay * 23), chart_width, chart_length);
+    
+    fill(140);
+    rect(soldier_width * 0.75, gap_s * 2, soldier_width * 0.25,  soldier_width * 0.3);
+    fill(0);
+    textSize(20);
+    textAlign(CENTER, CENTER);
+    text("No\nImage\nAvailable", soldier_width * 0.875, (gap_s * 2) + (soldier_width * 0.15));
   }//end render
   
-  float chart(float x)
+  float chart(float x, float y)
   {
-    float scale = 0;
+    float scale;
+    
+    scale = (x * ((soldier_width * 0.6) - (y * 2))) / 100;
     
     return scale;
   }//end chart
