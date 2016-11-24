@@ -120,8 +120,8 @@ void initialize()
   mission_length = screen_length * 0.1;
   mission_width = ((screen_width * 0.8) - (gap_m * 3)) / 2.0;
   
-  soldier_choice = 100;
-  mission_choice = 100;
+  soldier_choice = 0;
+  mission_choice = 0;
   mission_selected = 100;
   
   tech_width = (screen_width * 0.8) / 4;
@@ -376,8 +376,8 @@ void keyPressed()
         load = true;
         on = true;
         menu_choice = 100;
-        mission_choice = 100;
-        soldier_choice = 100;
+        mission_choice = 0;
+        soldier_choice = 0;
         mission_selected = 100;
       }//end else
     }//end if
@@ -423,11 +423,48 @@ void keyPressed()
       }//end if
     }//end if
     
-    if(menu_choice < 5 && menu_choice > -1)
+    if(menu_choice < 5 && menu_choice > - 1)
     {
       if(key == 's')
       {
         menu_choice++;
+      }//end if
+    }//end if
+    
+    if(menu_choice == 1)
+    {
+      if(mission_choice > 0 && mission_choice < missions.size())
+      {
+        if(key == 'q')
+        {
+          mission_choice--;
+        }//end if
+      }//end if
+      
+      if(mission_choice < missions.size() - 1 && mission_choice > - 1)
+      {
+        if(key == 'a')
+        {
+          mission_choice++;
+        }//end if
+      }//end if
+    }//end if
+    if(menu_choice == 2)
+    {
+      if(soldier_choice > 0 && soldier_choice < soldiers.size())
+      {
+        if(key == 'e')
+        {
+          soldier_choice--;
+        }//end if
+      }//end if
+      
+      if(soldier_choice < soldiers.size() - 1 && soldier_choice > - 1)
+      {
+        if(key == 'd')
+        {
+          soldier_choice++;
+        }//end if
       }//end if
     }//end if
   }//end if
@@ -449,8 +486,8 @@ void mousePressed()
       load = true;
       on = true;
       menu_choice = 100;
-      mission_choice = 100;
-      soldier_choice = 100;
+      mission_choice = 0;
+      soldier_choice = 0;
       mission_selected = 100;
     }//end else
   }//end if
