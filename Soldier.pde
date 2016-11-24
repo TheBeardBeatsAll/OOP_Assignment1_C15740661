@@ -37,6 +37,18 @@ class Soldier
   
   void render()
   {
+    float charts;
     
+    charts = chart(mobility);
+    charts = chart(aim);
+    charts = chart(tech);
+    charts = chart(will);
   }//end render
+  
+  float chart(float x)
+  {
+    float scale = 0;
+    
+    return scale;
+  }//end chart
 }//end class

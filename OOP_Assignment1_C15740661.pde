@@ -38,8 +38,7 @@ PImage[] craft = new PImage[3];
 PImage[] areas = new PImage[4];
 PImage[] item = new PImage[12];
 
-String[] menu = new String[5];
-String[] t_menu = new String[3];
+String[] menu = new String[6];
 
 Mission selected = null;
 
@@ -94,20 +93,17 @@ void initialize()
   
   menu_choice = 100;
   menu_border = screen_length * 0.18f;
-  menu_button = (screen_length * 0.8f) / 6;
-  menu_gap = menu_button * 0.25f;
+  menu_button = (screen_length * 0.8f) / 7;
+  menu_gap = (menu_button * 0.8) / 5;
   menu_width = screen_width * 0.18f;
   menu_padding = screen_width * 0.01f;
   
-  menu[0] = "Missions";
-  menu[1] = "Soldiers";
-  menu[2] = "Craft";
-  menu[3] = "Tech";
-  menu[4] = "Council";
-  
-  t_menu[0] = "Armour";
-  t_menu[1] = "Weapons";
-  t_menu[2] = "Utility";
+  menu[0] = "Overview";
+  menu[1] = "Missions";
+  menu[2] = "Soldiers";
+  menu[3] = "Craft";
+  menu[4] = "Tech";
+  menu[5] = "Council";
   
   gap_cl = screen_width * 0.04;
   space_cl = (screen_length - (gap_cl * 3.8)) / 43.0;
@@ -494,11 +490,11 @@ void mousePressed()
   
   if( mouseX > screen_inlay + menu_padding  + (screen_width * 0.8) && mouseX < screen_inlay + menu_padding + (screen_width * 0.8) + menu_width)
   {
-    for(int i = 0; i < 5; i++)
+    for(int i = 0; i < 6; i++)
     {
       if( mouseY > screen_inlay + menu_border + (i * (menu_gap + menu_button)) && mouseY < screen_inlay + menu_border + menu_button + (i * (menu_gap + menu_button)))
       {
-        menu_choice = i + 1;
+        menu_choice = i;
       }//end if
     }//end for
   }//end if
@@ -613,12 +609,12 @@ void menu()
   text("XCOM:", (screen_width * 0.2f) / 2, menu_border / 3);
   text("Menu", (screen_width * 0.2f) / 2, (menu_border * 2) / 3);
   
-  for(int i = 0; i < 5; i++)
+  for(int i = 0; i < 6; i++)
   {
     textSize(24);
     textAlign(CENTER, CENTER);
     
-    if(menu_choice == i + 1)
+    if(menu_choice == i)
     {
       fill(#020ACB);
     }//end if
@@ -637,6 +633,17 @@ void welcome()
 {
   screen_back();
   
+  stroke(0);
+  fill(255);
+  rect(0,0, mission_width, mission_length);
+  
+  if(selected != null)
+  {
+   fill(0);
+   textSize(24);
+   textAlign(CENTER, CENTER);
+   text(selected.name, mission_width * 0.5, mission_length *0.5);
+  }//end if
 }//end welcome
 
 void missions()
