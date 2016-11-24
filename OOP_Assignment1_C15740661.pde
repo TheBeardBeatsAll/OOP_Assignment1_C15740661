@@ -22,17 +22,19 @@ float gap_cl, space_cl;
 float gap_cr, craft_length, craft_width;
 float gap_m, mission_length, mission_width;
 float interval, tech_width, tech_length, gap_t;
+float soldier_width, soldier_length, gap_s;
 
 int menu_choice, soldier_choice, mission_choice, mission_selected;
 int item_choice;
 
-String select;
+String s_select, m_select;
 
 boolean on, load;
 
 Table t;
 
 Boolean[] select_m = new Boolean[4];
+Boolean[] select_s = new Boolean[14];
 
 PImage[] craft = new PImage[3];  
 PImage[] areas = new PImage[4];
@@ -41,12 +43,14 @@ PImage[] item = new PImage[12];
 String[] menu = new String[6];
 
 Mission selected = null;
+Soldier selects = null;
 
 ArrayList<Mission> missions = new ArrayList<Mission>();
 ArrayList<Tech> items = new ArrayList<Tech>();
 ArrayList<Country> countries = new ArrayList<Country>();
 ArrayList<Craft> aircraft = new ArrayList<Craft>();
 ArrayList<Soldier> soldiers = new ArrayList<Soldier>();
+ArrayList<Soldier> on_mission = new ArrayList<Soldier>();
 
 void draw()
 {
@@ -70,10 +74,14 @@ void draw()
 }//end draw
 
 void initialize()
-{
+{  
   for(int i = 0; i < 4; i++)
   {
     select_m[i] = false;
+  }//end if
+  for(int i = 0; i < 14; i++)
+  {
+    select_s[i] = false;
   }//end if
   on = load = false;
 
@@ -123,6 +131,10 @@ void initialize()
   tech_width = (screen_width * 0.8) / 4;
   gap_t = (screen_width * 0.8) / 24;
   tech_length = (screen_length - (gap_t * 7)) / 4;
+  
+  soldier_width = screen_width * 0.50;
+  soldier_length = screen_length * 0.25;
+  gap_s = ((screen_width * 0.55) - soldier_width) / 2;
   
   loadData();
   loadImages();
@@ -403,8 +415,37 @@ void keyPressed()
                   select_m[j] = false;
                 }//end else
               }//end for
-              select_m[i] = true;
               selected = missions.get(i);
+            }//end else
+          }//end if
+        }//end for
+      }//end if
+      
+      if(menu_choice == 2)
+      {
+        for(int i = 0; i < soldiers.size(); i++)
+        {
+          if(soldier_choice == i)
+          {
+            if(select_s[i])
+            {
+              select_s[i] = false;
+              selects = null;
+            }//end if
+            else
+            {
+              for(int j = 0; j < soldiers.size(); j++)
+              {
+                if(i == j)
+                {
+                  select_s[j] = true;
+                }//end if
+                else
+                {
+                  select_s[j] = false;
+                }//end else
+              }//end for
+              selects = soldiers.get(i);
             }//end else
           }//end if
         }//end for
@@ -550,7 +591,6 @@ void mousePressed()
                   select_m[j] = false;
                 }//end else
               }//end for
-              select_m[i] = true;
               selected = missions.get(i);
             }//end else
           }//end if
@@ -671,13 +711,13 @@ void missions()
       if(select_m[i])
       {
         fill(#FF1F23);
-        select = "Selected";
+        m_select = "Selected";
         
       }//end if
       else
       {
         fill(#79ADFF);
-        select = "Select";
+        m_select = "Select";
       }//end else
       stroke(0);
       rect(mission_width * 1.4, mission_length * 2.25, mission_width * 0.5, mission_length);
@@ -685,7 +725,7 @@ void missions()
       fill(0);
       textSize(24);
       textAlign(CENTER, CENTER);
-      text(select, mission_width * 1.65, mission_length * 2.75);
+      text(m_select, mission_width * 1.65, mission_length * 2.75);
       
       pushMatrix();
       translate(0, gap_m + mission_length);
@@ -718,7 +758,25 @@ void soldiers()
     if(soldier_choice == i)
     {
       pushMatrix();
-      translate(screen_inlay + (screen_width * 0.25), screen_inlay);
+      translate((screen_width * 0.25), 0);
+      if(select_s[i])
+      {
+        fill(#FF1F23);
+        s_select = "On Mission";
+      }//end if
+      else
+      {
+        fill(#79ADFF);
+        s_select = "Assign to Mission";
+      }//end else
+      stroke(0);
+      rect(gap_s + (soldier_width * 0.25), screen_length - (gap_s * 2.3), soldier_width * 0.5, gap_s * 1.8);
+      
+      fill(0);
+      textSize(20);
+      textAlign(CENTER, CENTER);
+      text(s_select, gap_s + (soldier_width * 0.5), screen_length - (gap_s * 1.4));
+      
       s.render();
       popMatrix();
       fill(#020ACB);

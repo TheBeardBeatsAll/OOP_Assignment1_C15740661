@@ -37,12 +37,24 @@ class Soldier
   
   void render()
   {
-    float charts;
+    float chart_width, chart_length;
+    float inlay = soldier_width * 0.02;
     
-    charts = chart(mobility);
-    charts = chart(aim);
-    charts = chart(tech);
-    charts = chart(will);
+    stroke(0);
+    fill(#B4F7FF);
+    rect(gap_s, gap_s, soldier_width * 0.6, soldier_length * 2.2);
+    rect(gap_s, (gap_s * 2) + (soldier_length * 2.2), soldier_width, soldier_length);
+    
+    fill(0);
+    textSize(12);
+    textAlign(LEFT, TOP);
+    text("Bio:\n" + bio, gap_s + inlay, (gap_s * 2) + (soldier_length * 2.2) + inlay, 
+     soldier_width - (inlay * 2), soldier_length - inlay);
+    
+    chart_width = chart(mobility);
+    chart_width = chart(aim);
+    chart_width = chart(tech);
+    chart_width = chart(will);
   }//end render
   
   float chart(float x)
