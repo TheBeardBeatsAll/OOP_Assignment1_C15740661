@@ -47,7 +47,7 @@ class Soldier
     rect(gap_s, (gap_s * 2) + (soldier_length * 2.2), soldier_width, soldier_length);
     
     fill(0);
-    textSize(12);
+    textSize(text_size[2]);
     textAlign(LEFT, TOP);
     text("Name: " + name + " '" + nickname + "' " + surname 
     + "\nRank: " + rank + "\nHealth: " + health + "\nKills:" + kills
@@ -74,7 +74,7 @@ class Soldier
     fill(140);
     rect(soldier_width * 0.75, gap_s * 2, soldier_width * 0.25,  soldier_width * 0.3);
     fill(0);
-    textSize(20);
+    textSize(text_size[6]);
     textAlign(CENTER, CENTER);
     text("No\nImage\nAvailable", soldier_width * 0.875, (gap_s * 2) + (soldier_width * 0.15));
   }//end render

@@ -28,10 +28,10 @@ class Craft
     
     textAlign(CENTER);
     fill(0);
-    textSize(15);
+    textSize(text_size[5]);
     text(type + " '" + nickname + "'"
     , gap_cr, (gap_cr * 1.1) + y, craft_width, craft_length);
-    textSize(12);
+    textSize(text_size[2]);
     text("Systems: " + wp1 + ", " + wp2 + ",\n"
     + wp3 + ", " + wp4 + "\nFuel: " + fuel + "    Armour: " 
     + armour + "\nDescription: " + description 

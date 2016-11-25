@@ -1,7 +1,6 @@
 void setup()
 {
-  //fullScreen();
-  size( 1000, 600);
+  fullScreen();
   initialize();
   createPDA();
 }//end setup
@@ -35,6 +34,8 @@ boolean on, load;
 Table t;
 
 int[] checks = new int[5];
+int[] text_size = new int[9];//entries relate to textSize(10, 11, 12, 13, 14, 15, 20, 24, 36)
+
 
 Boolean[] select_m = new Boolean[4];
 Boolean[] select_s = new Boolean[14];
@@ -104,6 +105,16 @@ void initialize()
   screen_inlay = border + (corner * 0.9);
   screen_width = pda_width * 0.73f;
   screen_length = pda_length - (corner * 1.8f);
+  
+  text_size[0] = (int)(screen_length * 0.018);//entry relate to textSize(10)
+  text_size[1] = (int)(screen_length * 0.019);//entry relate to textSize(11)
+  text_size[2] = (int)(screen_length * 0.021);//entry relate to textSize(12)
+  text_size[3] = (int)(screen_length * 0.0225);//entry relate to textSize(13)
+  text_size[4] = (int)(screen_length * 0.024);//entry relate to textSize(14)
+  text_size[5] = (int)(screen_length * 0.029);//entry relate to textSize(15)
+  text_size[6] = (int)(screen_length * 0.035);//entry relate to textSize(20)
+  text_size[7] = (int)(screen_length * 0.045);//entry relate to textSize(24)
+  text_size[8] = (int)(screen_length * 0.07);//entry relate to textSize(36)
   
   handle_length = pda_length / 3.0f;
   handle_width = pda_length * 0.15f;
@@ -719,14 +730,14 @@ void menu()
   rect(0, 0, screen_width * 0.2f, screen_length);
   
   fill(0);
-  textSize(36);
+  textSize(text_size[8]);
   textAlign(CENTER, CENTER);
   text("XCOM:", (screen_width * 0.2f) / 2, menu_border / 3);
   text("Menu", (screen_width * 0.2f) / 2, (menu_border * 2) / 3);
   
   for(int i = 0; i < 6; i++)
   {
-    textSize(24);
+    textSize(text_size[7]);
     textAlign(CENTER, CENTER);
     
     if(menu_choice == i)
@@ -758,7 +769,7 @@ void welcome()
     {
        Soldier s = on_mission.get(i);
        fill(0);
-       textSize(24);
+       textSize(text_size[7]);
        textAlign(CENTER, CENTER);
        text(s.name, mission_width * 0.8, mission_length * 0.5 + (i * (mission_length * 0.5)));
     }//end for
@@ -766,7 +777,7 @@ void welcome()
   if(selected != null)
   {
    fill(0);
-   textSize(24);
+   textSize(text_size[7]);
    textAlign(CENTER, CENTER);
    text(selected.name, mission_width * 0.5, mission_length * 0.5);
   }//end if
@@ -809,7 +820,7 @@ void missions()
       rect(mission_width * 1.4, mission_length * 2.25, mission_width * 0.5, mission_length);
       
       fill(0);
-      textSize(24);
+      textSize(text_size[7]);
       textAlign(CENTER, CENTER);
       text(m_select, mission_width * 1.65, mission_length * 2.75);
       
@@ -826,7 +837,7 @@ void missions()
     stroke(0);
     rect(gap_m + x, gap_m + y, mission_width, mission_length);
     
-    textSize(24);
+    textSize(text_size[7]);
     textAlign(CENTER, CENTER);
     fill(0);
     text(m.name, gap_m + x, gap_m + y, mission_width, mission_length);
@@ -859,7 +870,7 @@ void soldiers()
       rect(gap_s + (soldier_width * 0.25), screen_length - (gap_s * 2.3), soldier_width * 0.5, gap_s * 1.8);
       
       fill(0);
-      textSize(20);
+      textSize(text_size[6]);
       textAlign(CENTER, CENTER);
       text(s_select, gap_s + (soldier_width * 0.5), screen_length - (gap_s * 1.4));
       
@@ -874,7 +885,7 @@ void soldiers()
     stroke(0);
     rect(0, (i * interval), screen_width * 0.25, interval);
     
-    textSize(12);
+    textSize(text_size[2]);
     textAlign(CENTER, CENTER);
     fill(0);
     text(s.rank + ". " + s.name + " '" + s.nickname + "' " + s.surname, 0, (i * interval), screen_width * 0.25, interval);
@@ -934,9 +945,9 @@ void council()
   
   textAlign(CENTER);
   fill(0);
-  textSize(14);
+  textSize(text_size[4]);
   text("Monthly Report:", gap_cl * 3.0, screen_length  - (gap_cl * 1.5), (screen_width * 0.8) - (gap_cl * 6.0), gap_cl * 1.25);
-  textSize(11);
+  textSize(text_size[1]);
   text("XCOM has been making great progress, slowly pushing ADVENT and their Alien Overlords back.\nPeople flock to our cause and the Avatar project has been hampered, keep up the good work",
   gap_cl * 3.0, screen_length  - (gap_cl * 1.1), (screen_width * 0.8) - (gap_cl * 6.0), gap_cl * 1.25);
   

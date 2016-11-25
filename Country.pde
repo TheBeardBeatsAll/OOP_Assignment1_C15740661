@@ -20,9 +20,9 @@ class Country
     
     textAlign(CENTER);
     fill(0);
-    textSize(14);
+    textSize(text_size[4]);
     text(region, (gap_cl * 0.6) + x, (space_cl + (gap_cl * 2.25)) + ((i - y) * (space_cl * 6)), (screen_width * 0.4) - (gap_cl * 1.2),(space_cl * 5.0));
-    textSize(11);
+    textSize(text_size[1]);
     text("Supplies per Month: " + supplies + "    Threat Level: " + threat + "\n  Report: " + report, (gap_cl * 0.6) + x, (space_cl + (gap_cl * 2.7)) + ((i - y) * (space_cl * 6)), (screen_width * 0.4) - (gap_cl * 1.2),(space_cl * 5.0));
   }//end render
 }//end Country

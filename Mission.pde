@@ -41,12 +41,12 @@ class Mission
     
     
     fill(0);
-    textSize(15);
+    textSize(text_size[5]);
     textAlign(LEFT, TOP);
     text("Name: " + name + "\nType: " + type + "\nRewards: " + rewards + "\nDifficulty: " 
     + difficulty + "\nLocation: " + location
     , mission_width * 1.29, mission_length * 3.1);
-    textSize(13);
+    textSize(text_size[3]);
     text("Enemies Present: " + alien1_amount + " " + alien1_name + "'s, " + alien2_amount + " " + alien2_name + "'s, "
     + alien3_amount + " " + alien3_name + "'s, " + alien4_amount + " " + alien4_name + "'s"
     + "\n" + description

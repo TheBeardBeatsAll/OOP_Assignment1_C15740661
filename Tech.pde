@@ -19,11 +19,11 @@ class Tech
     fill(#B4F7FF);
     rect(x, y, tech_width * 1.1, tech_length * 1.35);
     fill(0);
-    textSize(14);
+    textSize(text_size[4]);
     textAlign(CENTER, CENTER);
     text(name, 
     x + (tech_width * 0.55), y + (tech_length * 0.1));
-    textSize(10);
+    textSize(text_size[0]);
     text("Type: " + type + "  Stock: " + amount, 
     x + (tech_width * 0.55), y + (tech_length * 0.29));
     textAlign(LEFT, TOP);
