@@ -1,6 +1,7 @@
 void setup()
 {
-  fullScreen();
+  //fullScreen();
+  size( 1000, 600);
   initialize();
   createPDA();
 }//end setup
@@ -27,7 +28,7 @@ float soldier_width, soldier_length, gap_s;
 int menu_choice, soldier_choice, mission_choice, mission_selected;
 int item_choice, count;
 
-String s_select, m_select;
+String s_select, m_select, o_select;
 
 boolean on, load;
 
@@ -660,6 +661,30 @@ void mousePressed()
           soldier_choice = i;
         }//end if
       }//end for
+    }//end if
+
+    if( mouseX > screen_inlay + (screen_width * 0.25) + gap_s + (soldier_width * 0.25) && mouseX <  screen_inlay + (screen_width * 0.25) + gap_s + (soldier_width * 0.75))
+    {
+      if( mouseY >   screen_inlay + screen_length - (gap_s * 2.3) && mouseY <  screen_inlay + screen_length - (gap_s * 0.5))
+      {
+        for(int i = 0; i < soldiers.size(); i++)
+        {
+          if(soldier_choice == i)
+          {
+            if(select_s[i])
+            {
+              remove(i);
+            }//end if
+            else
+            {
+              if(count < checks.length)
+              {
+                add(i);
+              }//end if
+            }//end else
+          }//end if
+        }//end for
+      }//end if
     }//end if
   }//end if
 }//end mousePressed
