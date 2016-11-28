@@ -18,7 +18,7 @@ float border, pda_width, pda_length, screen_inlay;
 float handle_length, handle_width, corner;
 float screen_width, screen_length, radius;
 float menu_border, menu_button ,menu_gap ,menu_width ,menu_padding;
-float gap_cl, space_cl;
+float gap_cl, space_cl, timer;
 float gap_cr, craft_length, craft_width;
 float gap_m, mission_length, mission_width;
 float interval, tech_width, tech_length, gap_t;
@@ -45,6 +45,7 @@ PImage[] areas = new PImage[4];
 PImage[] item = new PImage[12];
 
 String[] menu = new String[6];
+String[] overview = new String[6];
 
 Mission selected = null;
 Soldier selects = null;
@@ -133,6 +134,13 @@ void initialize()
   menu[4] = "Tech";
   menu[5] = "Council";
   
+  overview[3] = "Everything is going smoothly Commander";
+  overview[4] = "\nMost of the underpopulated areas around the world belong to us and we are making progress on putting ADVENT under pressure where it hurts them.";
+  overview[5] = "\nTheir Avatar Project is still moving forward but we are confident that you have plans to deal with that.\nWe will reclaim this world!";
+  overview[0] = "Three of our most advanced aircraft are on standby to deal with any aeriel threats ADVENT send us and can be viewed on the craft screen";
+  overview[1] = "The latest items our engineers have developed can be viewed on the Tech screen. Our soldiers will love some of these";
+  overview[2] = "Commander, you can see the state of our operations around the world on the Council screen as well as the monthly report from the council";
+  
   gap_cl = screen_width * 0.04;
   space_cl = (screen_length - (gap_cl * 3.8)) / 43.0;
   
@@ -147,6 +155,7 @@ void initialize()
   soldier_choice = 0;
   mission_choice = 0;
   mission_selected = 100;
+  timer = -1;
   
   tech_width = (screen_width * 0.8) / 4;
   gap_t = (screen_width * 0.8) / 24;
@@ -348,44 +357,47 @@ void screen()
   {
     loading();
     
-    pushMatrix();
-    translate(screen_width * 0.80f, 0);
-    menu();
-    popMatrix();
-    
-    switch(menu_choice)
+    if(menu_choice != 100)
     {
-      case 0:
+      pushMatrix();
+      translate(screen_width * 0.80f, 0);
+      menu();
+      popMatrix();
+      
+      switch(menu_choice)
       {
-        overview();
-        break;
-      }//end case
-      case 1:       
-      {
-        missions();
-        break;
-      }//end case
-      case 2:
-      {
-        soldiers();
-        break;
-      }//end case
-      case 3:
-      {
-        crafts();
-        break;
-      }//end case
-      case 4:
-      {
-        tech();
-        break;
-      }//end case
-      case 5:
-      {
-        council();
-        break;
-      }//end case
-    }//end switch
+        case 0:
+        {
+          overview();
+          break;
+        }//end case
+        case 1:       
+        {
+          missions();
+          break;
+        }//end case
+        case 2:
+        {
+          soldiers();
+          break;
+        }//end case
+        case 3:
+        {
+          crafts();
+          break;
+        }//end case
+        case 4:
+        {
+          tech();
+          break;
+        }//end case
+        case 5:
+        {
+          council();
+          break;
+        }//end case
+      }//end switch
+    }//end if
   }//end if
   else
   {
@@ -403,10 +415,13 @@ void keyPressed()
       if(on)
       {
         on = false;
+        loading_screen.stop();
       }//end if
       else
       {
         on = true;
+        timer = millis();
+        loading_screen.play();
         menu_choice = 100;
         mission_choice = 0;
         soldier_choice = 0;
@@ -582,10 +597,13 @@ void mousePressed()
     if(on)
     {
       on = false;
+      loading_screen.stop();
     }//end if
     else
     {
       on = true;
+      timer = millis();
+      loading_screen.play();
       menu_choice = 100;
       mission_choice = 0;
       soldier_choice = 0;
@@ -705,16 +723,18 @@ void mousePressed()
 void loading()
 {
   fill(0);
-  rect(0, 0, screen_width * 0.8f, screen_length);
-  loading_screen.play();
-  image(loading_screen, 0, 0, screen_width * 0.8, screen_length);
+  rect(0, 0, screen_width, screen_length);
+  
+  
+  image(loading_screen, 0, 0, screen_width, screen_length);
 
-  if (frameCount % 60 == 0)
+  if((millis() - timer) / 1000 > 3)
   {
     if(menu_choice == 100)
     {
-      menu_choice = 0;
-      return;
+      timer = -1;
+      
+      menu_choice = 0;  
     }//end if
   }//end if
 }//end loading
@@ -754,8 +774,8 @@ void overview()
 {
   screen_back();
   
-  fill(#42B1D8);
-  stroke(#42B1D8);
+  fill(#DE0000);
+  stroke(0);
   textSize(text_size[8]);
   textAlign(CENTER, CENTER);
   text("Welcome Commander", screen_width * 0.4, screen_length * 0.05);
@@ -763,6 +783,8 @@ void overview()
   stroke(0);
   fill(#B4F7FF);
   rect(gap_m, gap_m * 4, mission_width * 0.8, mission_length * 3.5);
+  
+  fill(#79ADFF);
   rect(mission_width * 0.3, screen_length * 0.5, mission_width * 1.5, mission_length);
   if(selected != null)
   {
@@ -777,29 +799,15 @@ void overview()
   textAlign(CENTER, CENTER);
   text(m_select, mission_width * 1.05, (screen_length * 0.5) + mission_length * 0.5);
   
-  fill(#B4F7FF);
+  
   for(int i = 0; i < 3; i++)
   {
-    rect(screen_width * 0.35, (gap_m * 4) + (i * (mission_length + gap_m)), mission_width, mission_length * 0.9);
-  }//end for
-  
-  for(int i = 0; i < 5; i++)
-  {
-    x = y = 0;
-    if(i > 1)
-    {
-      y =(mission_length * 0.9) + gap_m;
-    }//end if
-    if(i % 2 == 1)
-    {
-      x = mission_width + gap_m;
-    }//end if
-    if(i == 4)
-    {
-      x = screen_width * 0.2;
-      y = 2 * ((mission_length * 0.9) + gap_m);
-    }//end if
-    rect(gap_m + x, screen_length * 0.65 + y, mission_width, mission_length * 0.9);
+    fill(#B4F7FF);
+    rect(screen_width * 0.35, (gap_m * 4) + (i * (mission_length + gap_m)), mission_width, mission_length * 0.7);
+    fill(0);
+    textSize(text_size[0]);
+    textAlign(LEFT, TOP);
+    text(overview[i], (screen_width * 0.35) + (gap_m * 0.2), (gap_m * 4.2) + (i * (mission_length + gap_m)), mission_width - (gap_m * 0.2), (mission_length * 0.7) - (gap_m * 0.2));
   }//end for
 
   if(selected != null)
@@ -842,11 +850,18 @@ void overview()
       x = screen_width * 0.2;
       y = 2 * ((mission_length * 0.9) + gap_m);
     }//end if
+    
+    fill(#79ADFF);
+    rect(gap_m + x, (screen_length * 0.65) + y, mission_width, mission_length * 0.9);
+    
     fill(0);
     textSize(text_size[5]);
     textAlign(CENTER, CENTER);
     text(s_select, (mission_width * 0.5)+ gap_m + x, (mission_length * 0.45) + (screen_length * 0.65) + y);
   }//end for
+  textSize(text_size[2]);
+  textAlign(LEFT, TOP);
+  text(overview[3] + overview[4] + overview[5], gap_m * 1.2, gap_m * 4.2, (mission_width * 0.8) - (gap_m * 0.2), (mission_length * 3.5)  - (gap_m * 0.2));
 }//end overview
 
 void missions()
