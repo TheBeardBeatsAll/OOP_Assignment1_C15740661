@@ -29,7 +29,7 @@ int item_choice, count;
 
 String s_select, m_select, o_select;
 
-boolean on, load;
+boolean on;
 
 Table t;
 
@@ -87,7 +87,7 @@ void initialize()
   {
     select_s[i] = false;
   }//end if
-  on = load = false;
+  on = false;
 
   for(int i = 0; i < 5; i++)
   {
@@ -353,7 +353,7 @@ void screen()
     {
       case 0:
       {
-        welcome();
+        overview();
         break;
       }//end case
       case 1:       
@@ -402,7 +402,6 @@ void keyPressed()
       }//end if
       else
       {
-        load = true;
         on = true;
         menu_choice = 100;
         mission_choice = 0;
@@ -582,7 +581,6 @@ void mousePressed()
     }//end if
     else
     {
-      load = true;
       on = true;
       menu_choice = 100;
       mission_choice = 0;
@@ -702,24 +700,17 @@ void mousePressed()
 
 void loading()
 {
-  if(load)
+  fill(0);
+  rect(0, 0, screen_width * 0.8f, screen_length);
+  loading_screen.play();
+  image(loading_screen, 0, 0, screen_width * 0.8, screen_length);
+
+  if (frameCount % 60 == 0)
   {
-    fill(0);
-    rect(0, 0, screen_width * 0.8f, screen_length);
-    loading_screen.play();
-    image(loading_screen, (screen_width * 0.8f) / 2 - loading_screen.width / 2, screen_length / 2 - loading_screen.height / 2);
-    
-    if (frameCount % 60 == 0)
+    if(menu_choice == 100)
     {
-      //if(load)
-      //{
-        load = false;
-        if(menu_choice == 100)
-        {
-          menu_choice = 0;
-        }//end if
-        return;
-      //}//end if
+      menu_choice = 0;
+      return;
     }//end if
   }//end if
 }//end loading
@@ -755,33 +746,79 @@ void menu()
   }//end for
 }//end menu
 
-void welcome()
+void overview()
 {
   screen_back();
   
-  stroke(0);
-  fill(255);
-  rect(0,0, mission_width, mission_length);
+  fill(#42B1D8);
+  stroke(#42B1D8);
+  textSize(text_size[8]);
+  textAlign(CENTER, CENTER);
+  text("Welcome Commander", screen_width * 0.4, screen_length * 0.05);
   
-  if(on_mission != null)
-  {
-    for(int i = 0; i < on_mission.size(); i++)
-    {
-       Soldier s = on_mission.get(i);
-       fill(0);
-       textSize(text_size[7]);
-       textAlign(CENTER, CENTER);
-       text(s.name, mission_width * 0.8, mission_length * 0.5 + (i * (mission_length * 0.5)));
-    }//end for
-  }//end if
+  stroke(0);
+  fill(#B4F7FF);
+  rect(gap_m, gap_m * 4, mission_width * 0.8, mission_length * 3.5);
+  rect(mission_width * 0.3, screen_length * 0.5, mission_width * 1.5, mission_length);
   if(selected != null)
   {
-   fill(0);
-   textSize(text_size[7]);
-   textAlign(CENTER, CENTER);
-   text(selected.name, mission_width * 0.5, mission_length * 0.5);
+    m_select = "Operation " + selected.name + " locked in";
   }//end if
-}//end welcome
+  else
+  {
+    m_select = "--No Mission Selected--";
+  }//end else
+  fill(0);
+  textSize(text_size[7]);
+  textAlign(CENTER, CENTER);
+  text(m_select, mission_width * 1.05, (screen_length * 0.5) + mission_length * 0.5);
+  for(int i = 0; i < 3; i++)
+  {
+    rect(screen_width * 0.35, (gap_m * 4) + (i * (mission_length + gap_m)), mission_width, mission_length * 0.9);
+  }//end for
+  
+  for(int i = 0; i < 5; i++)
+  {
+    x = y = 0;
+    if(i > 1)
+    {
+      y =(mission_length * 0.9) + gap_m;
+    }//end if
+    if(i % 2 == 1)
+    {
+      x = mission_width + gap_m;
+    }//end if
+    if(i == 4)
+    {
+      x = screen_width * 0.2;
+      y = 2 * ((mission_length * 0.9) + gap_m);
+    }//end if
+    rect(gap_m + x, screen_length * 0.65 + y, mission_width, mission_length * 0.9);
+  }//end for
+  //if(on_mission != null)
+  //{
+  //  for(int i = 0; i < on_mission.size(); i++)
+  //  {
+  //     Soldier s = on_mission.get(i);
+  //     fill(0);
+  //     textSize(text_size[7]);
+  //     textAlign(CENTER, CENTER);
+  //     text(s.name, mission_width * 0.8, mission_length * 0.5 + (i * (mission_length * 0.5)));
+  //  }//end for
+  //}//end if
+  if(selected != null)
+  {
+    m_select = "Operation " + selected.name + " locked in";
+  }//end if
+  else
+  {
+    m_select = "--No Mission Selected--";
+  }//end else
+  fill(0);
+  textSize(text_size[7]);
+  textAlign(CENTER, CENTER);
+  text(m_select, mission_width * 1.05, (screen_length * 0.5) + mission_length * 0.5);
+}//end overview
 
 void missions()
 {
@@ -847,6 +884,16 @@ void missions()
 void soldiers()
 {
   screen_back();
+  
+  fill(#79ADFF);
+  stroke(0);
+  rect((soldier_width * 0.7) + screen_width * 0.25, gap_s, soldier_width * 0.35, gap_s * 2);
+  
+  fill(0);
+  textSize(text_size[6]);
+  textAlign(CENTER, CENTER);
+  text(count + "/5 on mission", (soldier_width * 0.875) + screen_width * 0.25, gap_s * 2);
+  
   
   for(int i = 0; i < soldiers.size(); i++)
   {
@@ -996,6 +1043,7 @@ void mouseOver()
         y = j * (tech_length + gap_t);
         
         Tech t = items.get(item_choice);
+        item_choice++;
         if(mouseX > screen_inlay + (gap_t * 2) + tech_width + x && mouseX < screen_inlay + (gap_t * 2.6) + x + tech_width)
         {
           if(mouseY > screen_inlay + (gap_t * 2) + y && mouseY < screen_inlay + (gap_t * 3) + y)
@@ -1003,7 +1051,6 @@ void mouseOver()
             t.render(mouseX,mouseY);
           }//end if
         }//end if
-        item_choice++;
       }//end for
     }//end for
   }//end if

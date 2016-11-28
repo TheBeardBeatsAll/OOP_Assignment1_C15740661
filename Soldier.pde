@@ -72,11 +72,11 @@ class Soldier
     rect(gap_s + inlay, gap_s + (inlay * 23), chart_width, chart_length);
     
     fill(140);
-    rect(soldier_width * 0.75, gap_s * 2, soldier_width * 0.25,  soldier_width * 0.3);
+    rect(soldier_width * 0.75, gap_s * 4, soldier_width * 0.25,  soldier_width * 0.3);
     fill(0);
     textSize(text_size[6]);
     textAlign(CENTER, CENTER);
-    text("No\nImage\nAvailable", soldier_width * 0.875, (gap_s * 2) + (soldier_width * 0.15));
+    text("No\nImage\nAvailable", soldier_width * 0.875, (gap_s * 4) + (soldier_width * 0.15));
   }//end render
   
   float chart(float x, float y)
