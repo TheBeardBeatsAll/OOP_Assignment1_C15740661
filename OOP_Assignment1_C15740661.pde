@@ -6,8 +6,16 @@ void setup()
 }//end setup
 
 import gifAnimation.*;
+import ddf.minim.*;
 
 Gif loading_screen;
+
+Minim minim;
+AudioPlayer welcome;
+AudioPlayer mouse;
+AudioPlayer keyb;
+AudioPlayer on_s;
+AudioPlayer off_s;
 
 PShape pda, outer, inner, handle;
 PImage backg, map;
@@ -171,6 +179,7 @@ void initialize()
   
   loadData();
   loadImages();
+  loadSounds();
   
   interval = screen_length / soldiers.size();
 }//initialize
@@ -244,6 +253,27 @@ void loadData()
     soldiers.add(s);
   }//end for 
 }//end loadData
+
+void loadSounds()
+{
+  minim = new Minim(this);       
+  
+  welcome = minim.loadFile("welcome.mp3");
+  mouse = minim.loadFile("click.wav");
+  keyb = minim.loadFile("button.wav");
+  on_s = minim.loadFile("on.wav");
+  off_s = minim.loadFile("off.wav");
+}//end loadSounds
+
+void playSound(AudioPlayer sound)
+{
+  if (sound == null)
+  {
+    return;
+  }
+  sound.rewind();
+  sound.play(); 
+}//end playSound
 
 void createPDA()
 {
@@ -416,12 +446,14 @@ void keyPressed()
       {
         on = false;
         loading_screen.stop();
+        playSound(off_s);
       }//end if
       else
       {
         on = true;
         timer = millis();
         loading_screen.play();
+        playSound(on_s);
         menu_choice = 100;
         mission_choice = 0;
         soldier_choice = 0;
@@ -440,6 +472,7 @@ void keyPressed()
             {
               select_m[i] = false;
               selected = null;
+              playSound(keyb);
             }//end if
             else
             {
@@ -455,6 +488,7 @@ void keyPressed()
                 }//end else
               }//end for
               selected = missions.get(i);
+              playSound(keyb);
             }//end else
           }//end if
         }//end for
@@ -469,12 +503,14 @@ void keyPressed()
             if(select_s[i])
             {
               remove(i);
+              playSound(keyb);
             }//end if
             else
             {
               if(count < checks.length)
               {
                 add(i);
+                playSound(keyb);
               }//end if
             }//end else
           }//end if
@@ -486,6 +522,7 @@ void keyPressed()
     {
       if(key == 'w')
       {
+        playSound(keyb);
         menu_choice--;
       }//end if
     }//end if
@@ -494,6 +531,7 @@ void keyPressed()
     {
       if(key == 's')
       {
+        playSound(keyb);
         menu_choice++;
       }//end if
     }//end if
@@ -504,6 +542,7 @@ void keyPressed()
       {
         if(key == 'q')
         {
+          playSound(keyb);
           mission_choice--;
         }//end if
       }//end if
@@ -512,6 +551,7 @@ void keyPressed()
       {
         if(key == 'a')
         {
+          playSound(keyb);
           mission_choice++;
         }//end if
       }//end if
@@ -522,6 +562,7 @@ void keyPressed()
       {
         if(key == 'e')
         {
+          playSound(keyb);
           soldier_choice--;
         }//end if
       }//end if
@@ -530,6 +571,7 @@ void keyPressed()
       {
         if(key == 'd')
         {
+          playSound(keyb);
           soldier_choice++;
         }//end if
       }//end if
@@ -598,11 +640,13 @@ void mousePressed()
     {
       on = false;
       loading_screen.stop();
+      playSound(off_s);
     }//end if
     else
     {
       on = true;
       timer = millis();
+      playSound(on_s);
       loading_screen.play();
       menu_choice = 100;
       mission_choice = 0;
@@ -618,6 +662,7 @@ void mousePressed()
       if( mouseY > screen_inlay + menu_border + (i * (menu_gap + menu_button)) && mouseY < screen_inlay + menu_border + menu_button + (i * (menu_gap + menu_button)))
       {
         menu_choice = i;
+        playSound(mouse);
       }//end if
     }//end for
   }//end if
@@ -643,6 +688,7 @@ void mousePressed()
         if( mouseY > screen_inlay + gap_m + y && mouseY < screen_inlay + gap_m + y + mission_length)
         {
           mission_choice = i;
+          playSound(mouse);
         }//end if
       }//end if
     }//end for
@@ -659,6 +705,7 @@ void mousePressed()
             {
               select_m[i] = false;
               selected = null;
+              playSound(mouse);
             }//end if
             else
             {
@@ -674,6 +721,7 @@ void mousePressed()
                 }//end else
               }//end for
               selected = missions.get(i);
+              playSound(mouse);
             }//end else
           }//end if
         }//end for
@@ -690,6 +738,7 @@ void mousePressed()
         if( mouseY > screen_inlay + (i * interval) && mouseY < screen_inlay + interval + (i * interval))
         {
           soldier_choice = i;
+          playSound(mouse);
         }//end if
       }//end for
     }//end if
@@ -705,12 +754,14 @@ void mousePressed()
             if(select_s[i])
             {
               remove(i);
+              playSound(mouse);
             }//end if
             else
             {
               if(count < checks.length)
               {
                 add(i);
+                playSound(mouse);
               }//end if
             }//end else
           }//end if
@@ -733,7 +784,7 @@ void loading()
     if(menu_choice == 100)
     {
       timer = -1;
-      
+      playSound(welcome);
       menu_choice = 0;  
     }//end if
   }//end if
