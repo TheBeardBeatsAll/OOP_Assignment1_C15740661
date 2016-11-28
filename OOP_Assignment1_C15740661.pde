@@ -156,6 +156,10 @@ void initialize()
   soldier_length = screen_length * 0.25;
   gap_s = ((screen_width * 0.55) - soldier_width) / 2;
   
+  s_select = ""; 
+  m_select = "";
+  o_select = "";
+  
   loadData();
   loadImages();
   
@@ -772,6 +776,8 @@ void overview()
   textSize(text_size[7]);
   textAlign(CENTER, CENTER);
   text(m_select, mission_width * 1.05, (screen_length * 0.5) + mission_length * 0.5);
+  
+  fill(#B4F7FF);
   for(int i = 0; i < 3; i++)
   {
     rect(screen_width * 0.35, (gap_m * 4) + (i * (mission_length + gap_m)), mission_width, mission_length * 0.9);
@@ -795,17 +801,7 @@ void overview()
     }//end if
     rect(gap_m + x, screen_length * 0.65 + y, mission_width, mission_length * 0.9);
   }//end for
-  //if(on_mission != null)
-  //{
-  //  for(int i = 0; i < on_mission.size(); i++)
-  //  {
-  //     Soldier s = on_mission.get(i);
-  //     fill(0);
-  //     textSize(text_size[7]);
-  //     textAlign(CENTER, CENTER);
-  //     text(s.name, mission_width * 0.8, mission_length * 0.5 + (i * (mission_length * 0.5)));
-  //  }//end for
-  //}//end if
+
   if(selected != null)
   {
     m_select = "Operation " + selected.name + " locked in";
@@ -818,6 +814,39 @@ void overview()
   textSize(text_size[7]);
   textAlign(CENTER, CENTER);
   text(m_select, mission_width * 1.05, (screen_length * 0.5) + mission_length * 0.5);
+  
+  for(int i = 0; i < 5; i++)
+  {
+    x = y = 0;
+    
+    if(i < on_mission.size())
+    {
+      Soldier s = on_mission.get(i);
+      s_select = s.rank + " " + s.name + " '" + s.nickname + "' " + s.surname;
+    }//end if
+    else
+    {
+      s_select = "--Vacant Slot On Mission--";
+    }//end else
+    
+    if(i > 1)
+    {
+      y = (mission_length * 0.9) + gap_m;
+    }//end if
+    if(i % 2 == 1)
+    {
+      x = mission_width + gap_m;
+    }//end if
+    if(i == 4)
+    {
+      x = screen_width * 0.2;
+      y = 2 * ((mission_length * 0.9) + gap_m);
+    }//end if
+    fill(0);
+    textSize(text_size[5]);
+    textAlign(CENTER, CENTER);
+    text(s_select, (mission_width * 0.5)+ gap_m + x, (mission_length * 0.45) + (screen_length * 0.65) + y);
+  }//end for
 }//end overview
 
 void missions()
