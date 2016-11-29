@@ -5,6 +5,7 @@ class Tech
   int amount;
   String description;
   
+  //load in data from row in file
   Tech(TableRow row)
   {
     this.type = row.getString(0);
@@ -13,6 +14,7 @@ class Tech
     this.description = row.getString(3);
   }//end constructor
   
+  //Class method to draw data
   void render(float x, float y)
   {
     stroke(0);

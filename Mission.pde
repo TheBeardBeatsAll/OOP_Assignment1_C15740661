@@ -15,6 +15,7 @@ class Mission
   String alien4_name;
   String description;
   
+  //load in data from row in file
   Mission(TableRow row)
   {
     this.name = row.getString(0);
@@ -33,6 +34,7 @@ class Mission
     this.description = row.getString(13);
   }//end constructor
 
+  //Class method to draw data
   void render(PImage temp)
   {
     stroke(0);

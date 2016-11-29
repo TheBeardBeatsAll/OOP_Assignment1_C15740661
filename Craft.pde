@@ -7,6 +7,7 @@ class Craft
   String armour;
   String description;
   
+  //load in data from row in file
   Craft(TableRow row)
   {
     this.type = row.getString(0);
@@ -20,6 +21,7 @@ class Craft
     this.description = row.getString(8);
   }//end constructor
   
+  //Class method to draw data
   void render(float y, PImage temp)
   {
     stroke(0);

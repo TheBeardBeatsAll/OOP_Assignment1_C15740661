@@ -15,6 +15,7 @@ class Soldier
   String skill5;
   String bio;
   
+  //load in data from row in file
   Soldier(TableRow row)
   {
     this.name = row.getString(0);
@@ -35,12 +36,13 @@ class Soldier
     this.bio = row.getString(15);
   }//end constructor
   
+  //Class method to draw data
   void render()
   {
     float inlay = soldier_width * 0.02;
     float chart_width; 
     float chart_length = inlay * 1.5;
-    
+      
     stroke(0);
     fill(#B4F7FF);
     rect(gap_s, gap_s, soldier_width * 0.6, soldier_length * 2.2);
@@ -79,6 +81,7 @@ class Soldier
     text("No\nImage\nAvailable", soldier_width * 0.875, (gap_s * 4) + (soldier_width * 0.15));
   }//end render
   
+  //Class method to return scale on soldier stats to draw bar chart
   float chart(float x, float y)
   {
     float scale;

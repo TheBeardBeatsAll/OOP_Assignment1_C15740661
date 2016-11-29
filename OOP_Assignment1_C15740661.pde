@@ -1,15 +1,22 @@
 void setup()
 {
+  //set size to fullscreen, initialize all the measurements of that
+  //load in all the data and create the two shapes that make up the pda
   fullScreen();
   initialize();
   createPDA();
 }//end setup
 
+//library to use gifs
 import gifAnimation.*;
+
+//audio library
 import ddf.minim.*;
 
+//Class to play a gif
 Gif loading_screen;
 
+//Class to play a sound
 Minim minim;
 AudioPlayer welcome;
 AudioPlayer mouse;
@@ -17,7 +24,7 @@ AudioPlayer keyb;
 AudioPlayer on_s;
 AudioPlayer off_s;
 
-PShape pda, outer, inner, handle;
+PShape pda, outer, inner;
 PImage backg, map;
 
 float x, y;
@@ -68,26 +75,32 @@ ArrayList<Soldier> on_mission = new ArrayList<Soldier>();
 void draw()
 {
   stroke(0);
+  //set background image
   background(backg);
   
+  //draw pda, handle and power button
   pushMatrix();
   translate(border, border);
   shape(pda);
   translate(pda_width - handle_width, handle_length);
   drawHandle();
-  on_off();
+  draw_on_off();
   popMatrix();
   
+  //draw the current screen
   pushMatrix();
   translate(screen_inlay, screen_inlay);
   screen();
   popMatrix();
   
+  //check if mouseX & mouseY are over certain areas on the tech screen
   mouseOver();
 }//end draw
 
+//method intialize all the data: all measurements are taking in relation to width and height
 void initialize()
 {  
+  //set all booleans to false
   for(int i = 0; i < 4; i++)
   {
     select_m[i] = false;
@@ -104,17 +117,18 @@ void initialize()
   }//end if
   count = 0;
   
-  border = width*0.02f;
-  pda_width = width - (border*2);
-  pda_length = height - (border*2);
+  border = width * 0.02;
+  pda_width = width - (border * 2);
+  pda_length = height - (border * 2);
   
-  corner = pda_length * 0.1f;
-  radius = corner * 0.8f;
+  corner = pda_length * 0.1;
+  radius = corner * 0.8;
   
   screen_inlay = border + (corner * 0.9);
-  screen_width = pda_width * 0.73f;
-  screen_length = pda_length - (corner * 1.8f);
+  screen_width = pda_width * 0.73;
+  screen_length = pda_length - (corner * 1.8);
   
+  //text sizes scaled
   text_size[0] = (int)(screen_length * 0.018);//entry relate to textSize(10)
   text_size[1] = (int)(screen_length * 0.019);//entry relate to textSize(11)
   text_size[2] = (int)(screen_length * 0.021);//entry relate to textSize(12)
@@ -135,6 +149,7 @@ void initialize()
   menu_width = screen_width * 0.18f;
   menu_padding = screen_width * 0.01f;
   
+  //strings that are set
   menu[0] = "Overview";
   menu[1] = "Missions";
   menu[2] = "Soldiers";
@@ -177,6 +192,7 @@ void initialize()
   m_select = "";
   o_select = "";
   
+  //load in csv,wav,png & jpg files
   loadData();
   loadImages();
   loadSounds();
@@ -184,10 +200,13 @@ void initialize()
   interval = screen_length / soldiers.size();
 }//initialize
 
+//method to load in the images
 void loadImages()
 {
+  //load in gif
   loading_screen = new Gif(this, "XCOM_Shield_Logo.gif");
   
+  //load in background image
   backg = loadImage("background.jpg");
   backg.resize(width,height);
   
@@ -213,8 +232,10 @@ void loadImages()
   }//end for
 }//end loadImages
 
+//method to load in data
 void loadData()
 {
+  //make sure all arraylists start empty
   countries.clear();
   missions.clear();
   items.clear();
@@ -222,6 +243,7 @@ void loadData()
   aircraft.clear();
   on_mission.clear();
   
+  //load in all the data from the csv files
   t = loadTable("mission.csv", "csv");
   for(TableRow row : t.rows())
   {
@@ -254,6 +276,7 @@ void loadData()
   }//end for 
 }//end loadData
 
+//method load in sounds
 void loadSounds()
 {
   minim = new Minim(this);       
@@ -265,6 +288,7 @@ void loadSounds()
   off_s = minim.loadFile("off.wav");
 }//end loadSounds
 
+//method to play the sounds
 void playSound(AudioPlayer sound)
 {
   if (sound == null)
@@ -275,13 +299,14 @@ void playSound(AudioPlayer sound)
   sound.play(); 
 }//end playSound
 
+//method to create the inner and outer shape of the pda
 void createPDA()
 {
   float inside_corner = corner * 0.7f;
   float inside_width = corner * 0.7f;
-  float gap = pda_length * 0.015f;
+  float gap_pda = pda_length * 0.015f;
   float theta = 45.0f;
-  float gap_theta = gap * sin(radians(theta));
+  float gap_theta = gap_pda * sin(radians(theta));
   
   pda = createShape(GROUP);
   outer = createShape();
@@ -337,6 +362,8 @@ void createPDA()
   pda.addChild(inner);
 }//end drawPDA
 
+
+//method to draw the handle for the pda
 void drawHandle()
 {
   int i = 0;
@@ -361,7 +388,9 @@ void drawHandle()
   }//end while
 }//end drawHandle
 
-void on_off()
+
+//method to draw the power button either on or off
+void draw_on_off()
 {  
   if(on)
   {
@@ -377,18 +406,22 @@ void on_off()
   line(handle_width / 2, - radius * 0.9f,  handle_width / 2, -radius * 1.2f);
 }//end on_off
 
+
+//method to draw the current screen
 void screen()
 {
-  float gap = screen_width * 0.006f;
+  float gap_sc = screen_width * 0.006f;
   
   fill(#106738);
-  rect( - gap, - gap, screen_width + (gap * 2), screen_length + (gap *  2));
+  rect( - gap_sc, - gap_sc, screen_width + (gap_sc * 2), screen_length + (gap_sc *  2));
   if(on)
   {
+    //play the loading gif when the pda is turned on
     loading();
     
     if(menu_choice != 100)
     {
+      //draw the menu bar
       pushMatrix();
       translate(screen_width * 0.80f, 0);
       menu();
@@ -431,43 +464,53 @@ void screen()
   }//end if
   else
   {
+    //blank screen when off
     fill(0);
     rect(0, 0, screen_width, screen_length);
   }//end else
 }//end screen
 
+//method to process all changes when power button hit
+void update_on()
+{
+  if(on)
+  {
+    on = false;
+    loading_screen.stop();
+    playSound(off_s);
+  }//end if
+  else
+  {
+    on = true;
+    timer = millis();
+    loading_screen.play();
+    playSound(on_s);
+    menu_choice = 100;
+    mission_choice = 0;
+    soldier_choice = 0;
+    mission_selected = 100;
+  }//end else
+}//end update_on
+
+//method to check key presses
 void keyPressed()
 {
   if(keyPressed)
   {
     if(key == ' ')
     {
-      if(on)
-      {
-        on = false;
-        loading_screen.stop();
-        playSound(off_s);
-      }//end if
-      else
-      {
-        on = true;
-        timer = millis();
-        loading_screen.play();
-        playSound(on_s);
-        menu_choice = 100;
-        mission_choice = 0;
-        soldier_choice = 0;
-        mission_selected = 100;
-      }//end else
+      update_on();
     }//end if
     if(key == ENTER)
     {
+      //if on mission screen, select/deselect the mission currently displayed
       if(menu_choice == 1)
       {
         for(int i = 0; i < missions.size(); i++)
         {
           if(mission_choice == i)
           {
+            //deselect mission 
             if(select_m[i])
             {
               select_m[i] = false;
@@ -476,6 +519,7 @@ void keyPressed()
             }//end if
             else
             {
+              //select this mission and set all other missions to deselected
               for(int j = 0; j < missions.size(); j++)
               {
                 if(i == j)
@@ -494,6 +538,7 @@ void keyPressed()
         }//end for
       }//end if
       
+      //if on soldier screen, add current soldier onto mission to a total of 5 soldiers
       if(menu_choice == 2)
       {
         for(int i = 0; i < soldiers.size(); i++)
@@ -518,6 +563,7 @@ void keyPressed()
       }//end if
     }//end if
     
+    //navigate up and down the screen menu with w & s
     if(menu_choice > 0 && menu_choice < 6)
     {
       if(key == 'w')
@@ -536,6 +582,7 @@ void keyPressed()
       }//end if
     }//end if
     
+    //navigate up and down the screen menu with q & a
     if(menu_choice == 1)
     {
       if(mission_choice > 0 && mission_choice < missions.size())
@@ -556,6 +603,8 @@ void keyPressed()
         }//end if
       }//end if
     }//end if
+    
+    //navigate up and down the screen menu with e & d
     if(menu_choice == 2)
     {
       if(soldier_choice > 0 && soldier_choice < soldiers.size())
@@ -579,13 +628,17 @@ void keyPressed()
   }//end if
 }//end keyPressed
 
+//method to add soldier to mission
 void add(int x)
 {
+  //store index of soldier in ArrayList soldiers into array checks
   checks[count] = x;
+  //add soldier to ArrayList on_mission
   selects = soldiers.get(x);
   on_mission.add(selects);
   count++;
   
+  //set all entries of select_s to false except for the entries whose indexes are stored in checks
   for(int j = 0; j < select_s.length; j++)
   {
     for( int i = 0; i < count; i++)
@@ -603,11 +656,13 @@ void add(int x)
   }//end for
 }//end add
 
+//method to remove the soldier from the mission
 void remove(int x)
 {
   int temp;
   select_s[x] = false;
   
+  //find which entry of checks holds the index of the soldier and set it to -1
   for(int i = 0; i < checks.length; i++)
   {
     if(checks[i] == x)
@@ -615,6 +670,7 @@ void remove(int x)
       on_mission.remove(i);
       checks[i] = -1;
       count--;
+      //swap the current entry in checks to the end or until it encounters another -1 entry
       for(int j = i; j < checks.length - 1; j++)
       {
         if(checks[j + 1] == -1)
@@ -629,46 +685,51 @@ void remove(int x)
   }//end for
 }//end remove
 
+//method to check if mouseX and mouseY are between a certain set of passed through coordinates
+boolean mouseCheck(float x1, float x2, float y1, float y2)
+{
+  if(mouseX > x1 && mouseX < (x1 + x2))
+  {
+    if(mouseY > y1 && mouseY < (y1 + y2))
+    {
+      return true;
+    }//end if
+    else 
+    {
+      return false;
+    }//end else
+  }//end if
+  else 
+  {
+    return false;
+  }//end else
+}//end mouseCheck
+
+//method to check for a mouse press
 void mousePressed()
 {
   float x_on = width - ( border + (handle_width / 2) );
   float y_on = border + handle_length - (radius * 0.9f);
   float d = sqrt(pow(mouseX-x_on,2) + pow(mouseY-y_on,2));
+  //check for press on power button
   if (d <= ( radius / 2 ))
   {
-    if(on)
-    {
-      on = false;
-      loading_screen.stop();
-      playSound(off_s);
-    }//end if
-    else
-    {
-      on = true;
-      timer = millis();
-      playSound(on_s);
-      loading_screen.play();
-      menu_choice = 100;
-      mission_choice = 0;
-      soldier_choice = 0;
-      mission_selected = 100;
-    }//end else
+    update_on();
   }//end if
   
-  if( mouseX > screen_inlay + menu_padding  + (screen_width * 0.8) && mouseX < screen_inlay + menu_padding + (screen_width * 0.8) + menu_width)
+  //check for press on menu button 
+  for(int i = 0; i < 6; i++)
   {
-    for(int i = 0; i < 6; i++)
+    if(mouseCheck(screen_inlay + menu_padding  + (screen_width * 0.8), menu_width, screen_inlay + menu_border + (i * (menu_gap + menu_button)), menu_button))
     {
-      if( mouseY > screen_inlay + menu_border + (i * (menu_gap + menu_button)) && mouseY < screen_inlay + menu_border + menu_button + (i * (menu_gap + menu_button)))
-      {
-        menu_choice = i;
-        playSound(mouse);
-      }//end if
-    }//end for
-  }//end if
+      menu_choice = i;
+      playSound(mouse);
+    }//end if
+  }//end for
   
   if(menu_choice == 1)
   {
+    //check for press on mission menu
     for(int i = 0; i < missions.size(); i++)
     { 
       x = y = 0;
@@ -683,94 +744,86 @@ void mousePressed()
         x = mission_width + gap_m;
       }//end else
       
-      if( mouseX > screen_inlay + gap_m + x && mouseX < screen_inlay + gap_m + x + mission_width)
+      if(mouseCheck(screen_inlay + gap_m + x, mission_width, screen_inlay + gap_m + y, mission_length))
       {
-        if( mouseY > screen_inlay + gap_m + y && mouseY < screen_inlay + gap_m + y + mission_length)
-        {
-          mission_choice = i;
-          playSound(mouse);
-        }//end if
+        mission_choice = i;
+        playSound(mouse);
       }//end if
     }//end for
     
-  if( mouseX > screen_inlay + mission_width * 1.4 && mouseX < screen_inlay + mission_width * 1.9)
+    //check for press on mission select
+    if(mouseCheck(screen_inlay + (mission_width * 1.4), mission_width * 0.5, screen_inlay + (mission_length * 2.25), mission_length))
     {
-      if( mouseY > screen_inlay + mission_length * 2.25 && mouseY < screen_inlay + mission_length * 3.25)
+      for(int i = 0; i < missions.size(); i++)
       {
-        for(int i = 0; i < missions.size(); i++)
+        if(mission_choice == i)
         {
-          if(mission_choice == i)
+          if(select_m[i])
           {
-            if(select_m[i])
-            {
-              select_m[i] = false;
-              selected = null;
-              playSound(mouse);
-            }//end if
-            else
-            {
-              for(int j = 0; j < missions.size(); j++)
-              {
-                if(i == j)
-                {
-                  select_m[j] = true;
-                }//end if
-                else
-                {
-                  select_m[j] = false;
-                }//end else
-              }//end for
-              selected = missions.get(i);
-              playSound(mouse);
-            }//end else
+            select_m[i] = false;
+            selected = null;
+            playSound(mouse);
           }//end if
-        }//end for
-      }//end if
+          else
+          {
+            for(int j = 0; j < missions.size(); j++)
+            {
+              if(i == j)
+              {
+                select_m[j] = true;
+              }//end if
+              else
+              {
+                select_m[j] = false;
+              }//end else
+            }//end for
+            selected = missions.get(i);
+            playSound(mouse);
+          }//end else
+        }//end if
+      }//end for
     }//end if
   }//end if 
   
   if(menu_choice == 2)
   {
-    if( mouseX > screen_inlay && mouseX < screen_inlay + (screen_width * 0.25))
+    //check for press on soldier menu
+    for(int i = 0; i < soldiers.size(); i++)
+    {
+      if(mouseCheck(screen_inlay, screen_width * 0.25, screen_inlay + (i * interval), interval))
+      {
+        soldier_choice = i;
+        playSound(mouse);
+      }//end if
+    }//end for
+
+    //check for press on soldier select
+    if(mouseCheck(screen_inlay + gap_s + (screen_width * 0.25) + (soldier_width * 0.25), (soldier_width * 0.5), screen_inlay + screen_length - (gap_s * 2.3), gap_s * 1.8))
     {
       for(int i = 0; i < soldiers.size(); i++)
       {
-        if( mouseY > screen_inlay + (i * interval) && mouseY < screen_inlay + interval + (i * interval))
+        if(soldier_choice == i)
         {
-          soldier_choice = i;
-          playSound(mouse);
-        }//end if
-      }//end for
-    }//end if
-
-    if( mouseX > screen_inlay + (screen_width * 0.25) + gap_s + (soldier_width * 0.25) && mouseX <  screen_inlay + (screen_width * 0.25) + gap_s + (soldier_width * 0.75))
-    {
-      if( mouseY >   screen_inlay + screen_length - (gap_s * 2.3) && mouseY <  screen_inlay + screen_length - (gap_s * 0.5))
-      {
-        for(int i = 0; i < soldiers.size(); i++)
-        {
-          if(soldier_choice == i)
+          if(select_s[i])
           {
-            if(select_s[i])
+            remove(i);
+            playSound(mouse);
+          }//end if
+          else
+          {
+            if(count < checks.length)
             {
-              remove(i);
+              add(i);
               playSound(mouse);
             }//end if
-            else
-            {
-              if(count < checks.length)
-              {
-                add(i);
-                playSound(mouse);
-              }//end if
-            }//end else
-          }//end if
-        }//end for
-      }//end if
+          }//end else
+        }//end if
+      }//end for
     }//end if
   }//end if
 }//end mousePressed
 
+//method to run loading screen on power on
 void loading()
 {
   fill(0);
@@ -779,6 +832,7 @@ void loading()
   
   image(loading_screen, 0, 0, screen_width, screen_length);
 
+  //run loading gif for 3 seconds then swap to overview screen and play welcome sound
   if((millis() - timer) / 1000 > 3)
   {
     if(menu_choice == 100)
@@ -790,6 +844,7 @@ void loading()
   }//end if
 }//end loading
 
+//method to draw menu part of screen
 void menu()
 {
   fill(#9CCE64);
@@ -821,6 +876,7 @@ void menu()
   }//end for
 }//end menu
 
+//method to draw overview screen
 void overview()
 {
   screen_back();
@@ -837,19 +893,6 @@ void overview()
   
   fill(#79ADFF);
   rect(mission_width * 0.3, screen_length * 0.5, mission_width * 1.5, mission_length);
-  if(selected != null)
-  {
-    m_select = "Operation " + selected.name + " locked in";
-  }//end if
-  else
-  {
-    m_select = "--No Mission Selected--";
-  }//end else
-  fill(0);
-  textSize(text_size[7]);
-  textAlign(CENTER, CENTER);
-  text(m_select, mission_width * 1.05, (screen_length * 0.5) + mission_length * 0.5);
-  
   
   for(int i = 0; i < 3; i++)
   {
@@ -861,6 +904,7 @@ void overview()
     text(overview[i], (screen_width * 0.35) + (gap_m * 0.2), (gap_m * 4.2) + (i * (mission_length + gap_m)), mission_width - (gap_m * 0.2), (mission_length * 0.7) - (gap_m * 0.2));
   }//end for
 
+  //display mission if selected
   if(selected != null)
   {
     m_select = "Operation " + selected.name + " locked in";
@@ -874,6 +918,7 @@ void overview()
   textAlign(CENTER, CENTER);
   text(m_select, mission_width * 1.05, (screen_length * 0.5) + mission_length * 0.5);
   
+  //display up to 5 soldiers if selected
   for(int i = 0; i < 5; i++)
   {
     x = y = 0;
@@ -910,11 +955,13 @@ void overview()
     textAlign(CENTER, CENTER);
     text(s_select, (mission_width * 0.5)+ gap_m + x, (mission_length * 0.45) + (screen_length * 0.65) + y);
   }//end for
+  
   textSize(text_size[2]);
   textAlign(LEFT, TOP);
   text(overview[3] + overview[4] + overview[5], gap_m * 1.2, gap_m * 4.2, (mission_width * 0.8) - (gap_m * 0.2), (mission_length * 3.5)  - (gap_m * 0.2));
 }//end overview
 
+//method to draw mission screen
 void missions()
 {
   screen_back();
@@ -935,6 +982,7 @@ void missions()
       x = mission_width + gap_m;
     }//end else
     
+    //display whether mission is selected or not
     if(mission_choice == i)
     {
       if(select_m[i])
@@ -956,6 +1004,7 @@ void missions()
       textAlign(CENTER, CENTER);
       text(m_select, mission_width * 1.65, mission_length * 2.75);
       
+      //show mission info
       pushMatrix();
       translate(0, gap_m + mission_length);
       m.render(areas[i]);
@@ -966,6 +1015,8 @@ void missions()
     {
       fill(#79ADFF);
     }//end else
+    
+    //draw mission menu
     stroke(0);
     rect(gap_m + x, gap_m + y, mission_width, mission_length);
     
@@ -976,6 +1027,7 @@ void missions()
   }//end for
 }//end briefing
 
+//mission to draw soldiers screen
 void soldiers()
 {
   screen_back();
@@ -984,6 +1036,7 @@ void soldiers()
   stroke(0);
   rect((soldier_width * 0.7) + screen_width * 0.25, gap_s, soldier_width * 0.35, gap_s * 2);
   
+  //display amount of soldiers on mission
   fill(0);
   textSize(text_size[6]);
   textAlign(CENTER, CENTER);
@@ -998,6 +1051,8 @@ void soldiers()
     {
       pushMatrix();
       translate((screen_width * 0.25), 0);
+      
+      //show whether current soldier is on mission or not
       if(select_s[i])
       {
         fill(#FF1F23);
@@ -1016,6 +1071,7 @@ void soldiers()
       textAlign(CENTER, CENTER);
       text(s_select, gap_s + (soldier_width * 0.5), screen_length - (gap_s * 1.4));
       
+      //show current soldiers info
       s.render();
       popMatrix();
       fill(#020ACB);
@@ -1027,6 +1083,7 @@ void soldiers()
     stroke(0);
     rect(0, (i * interval), screen_width * 0.25, interval);
     
+    //display soldier menu
     textSize(text_size[2]);
     textAlign(CENTER, CENTER);
     fill(0);
@@ -1034,6 +1091,7 @@ void soldiers()
   }//end for
 }//end soldiers
 
+//method to draw crafts screen
 void crafts()
 {
   screen_back();
@@ -1042,10 +1100,12 @@ void crafts()
   {
     float y = i * (craft_length + gap_cr);
     Craft c = aircraft.get(i);
+    //display craft info + image
     c.render(y, craft[i]);
   }//end for
 }//end craft
 
+//method to draw tech screen
 void tech()
 {
   screen_back();
@@ -1059,6 +1119,7 @@ void tech()
       x = i * (tech_width + gap_t);
       y = j * (tech_length + gap_t);
       
+      //display info icon
       stroke(0);
       fill(#B4F7FF);
       rect((gap_t * 2) + x + tech_width, (gap_t * 2) + y, (gap_t * 0.6), gap_t);
@@ -1066,12 +1127,14 @@ void tech()
       ellipse((gap_t * 2.3) + x + tech_width, (gap_t * 2.3) + y, (gap_t * 0.3), (gap_t * 0.3));
       rect((gap_t * 2.15) + x + tech_width, (gap_t * 2.55) + y, (gap_t * 0.3), (gap_t * 0.35));
       
+      //display item image
       image(item[item_choice], (gap_t * 2) + x, (gap_t * 2) + y);
       item_choice++;
     }//end if
   }//end for
 }//end tech
 
+//method to draw council screen
 void council()
 {
   screen_back();
@@ -1105,10 +1168,12 @@ void council()
       x = (screen_width * 0.4);
       y = countries.size() / 2;
     }//end else
+    //show country info
     c.render(x, y, i);
   }//end for
 }//end council
 
+//method to draw the background grid on each screen
 void screen_back()
 {
   int line_count = 40;
@@ -1125,6 +1190,7 @@ void screen_back()
   }//end for
 }//end screen_back
 
+//method to check if mouse is over tech info icon
 void mouseOver()
 {
   if(menu_choice == 4)
@@ -1139,12 +1205,10 @@ void mouseOver()
         
         Tech t = items.get(item_choice);
         item_choice++;
-        if(mouseX > screen_inlay + (gap_t * 2) + tech_width + x && mouseX < screen_inlay + (gap_t * 2.6) + x + tech_width)
+        if(mouseCheck(screen_inlay + (gap_t * 2) + tech_width + x, gap_t * 0.6, screen_inlay + (gap_t * 2) + y, gap_t))
         {
-          if(mouseY > screen_inlay + (gap_t * 2) + y && mouseY < screen_inlay + (gap_t * 3) + y)
-          {
-            t.render(mouseX,mouseY);
-          }//end if
+          //display item info
+          t.render(mouseX,mouseY);
         }//end if
       }//end for
     }//end for

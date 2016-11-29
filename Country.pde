@@ -5,6 +5,7 @@ class Country
   String threat;
   String report;
   
+  //load in data from row in file
   Country(TableRow row)
   {
     this.region = row.getString(0);
@@ -13,6 +14,7 @@ class Country
     this.report = row.getString(3);
   }//end constructor
   
+  //Class method to draw data
   void render(float x, float y, int i)
   {
     fill(#B4F7FF);
