@@ -9,4 +9,4 @@ using the 'w' & 's' key to go up or down on the main menu, 'q' & 'a' key on the 
 
 The parts of this I am proudest off are the mission and soldier screens and how they are selected.
 
-[![Video](https://gyazo.com/11f6551d813fb11067ab928c3ac4d9bf)](https://www.youtube.com/watch?v=sq70u0WMlNk)
+[![Video](https://i.gyazo.com/11f6551d813fb11067ab928c3ac4d9bf.png)](https://www.youtube.com/watch?v=sq70u0WMlNk)
